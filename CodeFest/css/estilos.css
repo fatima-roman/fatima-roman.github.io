@@ -97,7 +97,7 @@ h2, h3 {
 /* Hacemos que imágenes y vídeos sean "responsive" */
 img, iframe, video, audio {
     max-width: 100%;
-    height: auto;
+    /*height: auto;*/
     border-radius: 5px; /* Bordes redondeados sutiles */
     margin-top: 10px;
 }
