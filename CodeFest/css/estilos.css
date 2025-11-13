@@ -159,7 +159,7 @@ legend {
 }
 
 label {
-    display: block; /* La etiqueta ocupa su propia línea */
+   /* display: block; /* La etiqueta ocupa su propia línea */
     margin-bottom: 8px;
     font-weight: bold;
 }
