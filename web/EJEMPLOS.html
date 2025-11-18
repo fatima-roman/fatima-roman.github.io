@@ -1,13 +1,57 @@
 <html>
     <head>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 20px;
+        }
+        h1 {
+          color: #2E8B57;
+        }
+        #rojo {
+          color: red;
+        }
+        #amarillo {
+          color: yellow;
+        }
+        #azul {
+          color: blue;
+        }
+        #verde {
+          color: green;
+        }
+        .clase1{
+          color: blue; 
+        }
+        #texto{
+          background-color: darkgoldenrod;
+          padding: 10px;
+          color: black;
+        }
+        table {
+          margin-top: 20px;
+          margin-bottom: 20px;
+        }
+        th {
+          background-color: #f2f2f2;
+        }
+        a {
+          text-decoration: none;
+          color: #1E90FF;
+        }
+        a:hover {
+          text-decoration: underline;
+        }
+      </style>
+      <meta charset="UTF-8">
 
     </head>
     <body>
         <button><a href="..\index.html">VOLVER</a></button>
 
         <h1>Este es un encabezado de nivel 1.</h1>
-        <h6>Pero éste otro es de nivel 6</h6>
-        <p>Ahora voy a definir un párrafo. Dentro del que pondremos texto en <b>negrita</b>,
+        <h6 class="clase1">Pero éste otro es de nivel 6</h6>
+        <p id="texto">Ahora voy a definir un párrafo. Dentro del que pondremos texto en <b>negrita</b>,
         <i>cursiva</i>, <u>subrayada</u> e incluso <b><u></i> negrita, cursiva y subrayada</b></u></i>, 
         mediante el anidamiento de etiquetas. 
         Además vamos a mostrar el uso de <sub>subíndices</sub> y de <sup>supraíndices</sup>,
@@ -173,10 +217,10 @@
   </table>
     <h1 id="arriba">Ejemplo con marcadores locales</h1>
   <ol>
-      <li> <a href="#marca_rojo">Rojo </a> </li>
-      <li><a href="#marca_amarillo"> Amarillo</a></li>
-      <li><a href="#marca_azul"> Azul</a></li>
-      <li><a href="#marca_verde"> Verde</a></li>
+      <li id="rojo"> <a href="#marca_rojo">Rojo </a> </li>
+      <li id="amarillo"><a href="#marca_amarillo"> Amarillo</a></li>
+      <li id="azul"><a href="#marca_azul"> Azul</a></li>
+      <li id="verde"><a href="#marca_verde"> Verde</a></li>
   </ol>
     <br>
     <h1>Color negro</h1>
@@ -184,27 +228,27 @@
     <p>
       Subir
     </p>
-    <h1>
-      <a name="marca_rojo" id="marca_rojo">Color rojo</a>
+    <h1 id="rojo">
+      <a id="rojo" name="marca_rojo" id="marca_rojo">Color rojo</a>
     </h1>
     <p>Consequat irure ese que llega enim consectetur quis pecador sed a gramenawer no puedor sexuarl. Tempor ahorarr eiusmod irure sexuarl amatomaa caballo blanco caballo negroorl dolore ahorarr commodo. De la pradera aliquip sit amet no puedor a peich quis qui pupita consectetur. Te va a hasé pupitaa al ataquerl ese que llega a wan diodenoo no puedor. Duis officia esse cillum por la gloria de mi madre a gramenawer jarl la caidita ese que llega quietooor nostrud. Benemeritaar sed se calle ustée jarl esse enim ahorarr a peich veniam. Va usté muy cargadoo enim diodenoo tiene musho peligro torpedo a peich diodeno velit papaar papaar. Al ataquerl occaecat te va a hasé pupitaa te voy a borrar el cerito ese que llega qui sed ad se calle ustée commodo et. Torpedo magna incididunt ullamco irure aliqua esse commodo.</p>
     <p><a href="#arriba">Subir</a>
     </p>
-    <h1>
-      <a name="marca_amarillo" id="marca_amarillo">Color amarillo</a>
+    <h1 id="amarillo">
+      <a id="amarillo" name="marca_amarillo" id="marca_amarillo">Color amarillo</a>
     </h1>
     <p>Commodo duis mamaar pupita elit consectetur mamaar elit adipisicing sexuarl. Enim eiusmod adipisicing benemeritaar ese pedazo de la caidita te voy a borrar el cerito laboris. Consectetur incididunt papaar papaar aliquip qui magna dolore elit dolor. Aliqua sed benemeritaar ese hombree aliqua labore. Occaecat papaar papaar tempor está la cosa muy malar exercitation qué dise usteer me cago en tus muelas laboris consectetur. Qui al ataquerl et velit apetecan. Adipisicing officia qué dise usteer eiusmod se calle ustée qué dise usteer pupita. No puedor no puedor elit fistro officia nisi ese pedazo de. Se calle ustée te voy a borrar el cerito ese que llega ese hombree labore. </p>
     <p><a href="#arriba">Subir</a>
     </p>
-    <h1>
-      <a name="marca_azul" id="marca_azul">Color azul</a>
+    <h1 id="azul">
+      <a id="azul" name="marca_azul" id="marca_azul">Color azul</a>
     </h1>
     <p>Lorem fistrum a peich voluptate officia incididunt dolor no puedor aute qui. Officia diodeno esse quis diodeno et pecador ex. Reprehenderit ese que llega elit ese que llega ullamco pecador hasta luego Lucas magna. Veniam me cago en tus muelas está la cosa muy malar se calle ustée aliquip. Ullamco aute reprehenderit llevame al sircoo consectetur jarl va usté muy cargadoo caballo blanco caballo negroorl sed.
 </p>
     <p><a href="#arriba">Subir</a>
     </p>
-    <h1>
-      <a name="marca_verde">Color verde</a>
+    <h1 id="verde">
+      <a id="verde" name="marca_verde">Color verde</a>
     </h1>
     <p>
 Irure tempor ese hombree diodenoo papaar papaar consequat me cago en tus muelas magna duis no puedor cillum. Ahorarr va usté muy cargadoo ullamco adipisicing apetecan ese hombree. Hasta luego Lucas ese hombree consectetur benemeritaar apetecan occaecat esse exercitation consectetur ese hombree sexuarl. Aliqua sit amet apetecan te va a hasé pupitaa velit consectetur reprehenderit ese que llega. Tempor sit amet labore ese pedazo de aliqua te voy a borrar el cerito magna. Caballo blanco caballo negroorl te voy a borrar el cerito adipisicing tempor. Se calle ustée reprehenderit qué dise usteer tiene musho peligro qué dise usteer elit qué dise usteer. Dolore exercitation elit esse ese hombree ese que llega.
@@ -237,7 +281,48 @@ Qui torpedo hasta luego Lucas ese hombree diodeno por la gloria de mi madre llev
 
   <button><a href="..\index.html">VOLVER</a></button>
     
-
+<style>
+  h1 { 
+     background: blue; 
+} 
+h2 { 
+     background: red; 
+     color: rgba(0,0,0,0.4); 
+} 
+p { 
+     font-family: Verdana Helvetica sans-serif;
+     font-size: 1.15em; 
+     font-weight: bold; text-align: center; 
+} 
+ul { 
+     font-style: italic; 
+     text-shadow: 2px 2px 4px red; 
+} 
+ol {
+     text-shadow: 2px 2px 5px darkblue; 
+}
+</style>
+<h1>Receta tortilla francesa</h1>
+<p>Ingredientes:</p>
+<ul>
+  <li>Huevos</li>
+  <li>Aceite</li>
+  <li>Sal</li>
+</ul>
+<ol>
+  <li>Calentar el aceite en una sartén</li>
+  <li>Cascar el huevo y batirlo</li>
+  <li>Verter el hueveo batido en la sartén</li>
+  <li>Esperar un par de minutos, voltear y volver a esperar.</li>
+</ol>
+<h2>Servir con mayonesa, tomate o jamón</h2>
+<ul>
+  <li>Cambiar las cabeceras H1 fondo azul y la etiqueta H2 a fondo rojo. Si ves que el texto y el fondo tienen poco contraste, prueba a poner el color del texto en blanco.</li>
+  <li>En las etiquetas P, cambia el tipo de letra, su tamaño algo mayor y en negrita, Céntralas también.&nbsp;</li>
+  <li>La lista desordenada en cursiva y sombra roja.</li>
+  <li>La lista ordenada, con algo de sombra azul.</li>
+  <li>La etiqueta H2 con la letra un poco transparente.</li>
+</ul>
 </body>
 
 </html>
