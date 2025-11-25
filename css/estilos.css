@@ -1,12 +1,51 @@
-h1 {
-    color: rgb(39, 22, 51);
-    font-family: Arial, sans-serif;
-    text-align: center;
-}
-
 p {
     color: gray;
     font-size: 16px;
     line-height: 1.5;
     margin: 20px;
+}
+h1 {
+    font: helvetica;
+}
+
+body{
+    background-color: #B5F4FF;
+    text-align: center;
+}
+
+header {
+    background-color: #007bff;
+}
+
+/*enlaces dentro del nav*/
+a {
+    background-color: #f8f9fa;
+    text-decoration: none;
+}
+a:hover {
+    background-color: #2c063b;
+    color: #007bff;
+}
+
+#contenido{
+    padding: 10px;
+}
+
+h2{
+    font-size: medium;
+}
+
+img{
+    max-width: 100%;
+    height: auto;
+}
+
+footer{
+    background-color: #333;
+}
+
+#pie{
+    color: white;
+    text-align: center;
+    padding: 10px;
 }
