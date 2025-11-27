@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 4.1</title>
+</head>
+<body>
+    <h1>Ejercicio 4.1</h1>
+    <div id="parrafo1">
+        <p>Este es el párrafo número 1 en cursiva y alineado a la derecha.</p>
+    </div>
+    <div id="parrafo2">
+        <p>Este también es un parrafo en minúscalas convertido a mayúsculas y tachado.</p>
+    </div>
+    <div id="parrafo3">
+        <p>Como no hay dos sin tres, este será el tercero con un tipo de letra diferente y un 20% más grande.</p>
+    </div>
+    <div id="parrafo4">
+        <p>Y por último, un texto en negrita y con sombrita en verde.</p>
+    </div>
+    <style>
+        #parrafo1 p {
+            font-style: italic;
+            text-align: right;
+        }
+        #parrafo2 p {
+            text-transform: uppercase;
+            text-decoration: line-through;
+        }
+        #parrafo3 p {
+            font-family: Arial;
+            font-size: 120%;
+        }
+        #parrafo4 p {
+            font-weight: bold;
+            color: black;
+            text-shadow: 1px 1px 2px darkgreen;
+        }
+    </style>
+    <div id="bloques">
+        <style>
+            #bloques {
+                display: flex;
+                gap: 20px;
+            }
+        </style>
+        <div id="Buscadores">
+            <p>Buscadores:</p>
+            <div id="Buscador1">
+                <a href="">DuckDuckGo</a>
+            </div>
+            <div id="Buscador2">
+                <a href="">Ecosia</a>  
+            </div>
+            <div id="Buscador3">
+                <a href="">Google</a>
+            </div>
+        </div>
+        <style>
+            p{
+                font-weight: bold;
+                font-size: large;
+            }
+            #Buscadores {
+                background-color: rgb(187, 214, 142);
+                padding: 10px;
+                width: 400px;
+                height: 200px;
+                border-radius: 15px;
+            }
+            #Buscador1  {
+                background-color: red;
+                height: 50px;
+                width: 100px;
+                display: inline-block;
+            }
+            #Buscador2  {
+                background-color: green;
+                height: 50px;
+                width: 100px;
+                display: inline-block;
+            }
+            #Buscador3  {
+                background-color: blue;
+                height: 50px;
+                width: 100px;
+                display: inline-block;
+            }
+            #Buscadores a {
+                color: white;
+                text-decoration: none;
+            }
+        </style>
+        <div id="RD">
+            <p>Redes Sociales:</p>
+            <div id="RD1">
+                <a href="">Facebook</a>
+            </div>
+            <div id="RD2">
+                <a href="">Twitter</a>  
+            </div>
+            <div id="RD3">
+                <a href="">Pinterest</a>
+            </div>
+        </div>
+        <style>
+            p{
+                font-weight: bold;
+                font-size: large;
+            }
+            #RD {
+                background-color: rgb(117, 204, 226);
+                padding: 10px;
+                width: 400px;
+                height: 200px;
+                border-radius: 15px;
+            }
+            #RD1  {
+                background-color: red;
+                height: 50px;
+                width: 100px;
+
+            }
+            #RD2  {
+                background-color: green;
+                height: 50px;
+                width: 100px;
+
+            }
+            #RD3  {
+                background-color: blue;
+                height: 50px;
+                width: 100px;
+
+            }
+            #RD a {
+                color: white;
+                text-decoration: none;
+            }
+        </style>
+        
+        <div id="Noticias">
+            <p>Noticias:</p>
+            <div id="Noticias1">
+                <a href="">El Pais</a>
+            </div>
+            <div id="Noticias2">
+                <a href="">El Diario </a>  
+            </div>
+            <div id="Noticias3">
+                <a href="">El Mundo</a>
+            </div>
+        </div>
+        <style>
+            p{
+                font-weight: bold;
+                font-size: large;
+            }
+            #Noticias {
+                background-color: rgb(195, 117, 226);
+                padding: 10px;
+                width: 400px;
+                height: 200px;
+                border-radius: 15px;
+            }
+            #Noticias div{
+                display: inline-block;
+            }
+            
+            #Noticias a:hover{
+                color: black;
+                font-weight: bold;
+            }
+            #Noticias a {
+                color: rgb(255, 255, 255);
+                text-decoration: none;
+            }
+        </style>
+    </div>
+
+    <button> <a href="indexEJ.html">VOLVER</a></button>
+</body>
+</html>

@@ -20,6 +20,14 @@
         #verde {
           color: green;
         }
+        #marca_negro {
+          color: black;
+          background-color: white;
+        }
+        #marca_blanco {
+          color: white;
+          background-color: black;
+        }
         .clase1{
           color: blue; 
         }
@@ -223,7 +231,7 @@
       <li id="verde"><a href="#marca_verde"> Verde</a></li>
   </ol>
     <br>
-    <h1>Color negro</h1>
+    <h1 id="marca_negro">Color negro</h1>
     <p>Lorem fistrum consectetur incididunt hasta luego Lucas amatomaa cillum. Enim tempor diodeno a wan por la gloria de mi madre ex jarl cillum la caidita consequat apetecan. Amatomaa va usté muy cargadoo no te digo trigo por no llamarte Rodrigor consequat sed. Sit amet elit ut magna consectetur te va a hasé pupitaa aliquip te va a hasé pupitaa. Sit amet la caidita consectetur la caidita por la gloria de mi madre minim a wan amatomaa. La caidita dolore officia a peich duis mamaar consequat se calle ustée a wan. Eiusmod tiene musho peligro dolore sed enim pecador. Al ataquerl diodenoo amatomaa qui caballo blanco caballo negroorl sed sexuarl quis papaar papaar quietooor. Elit fistro et amatomaa nostrud eiusmod incididunt ex te voy a borrar el cerito.</p>
     <p>
       Subir
@@ -268,13 +276,13 @@ Qui torpedo hasta luego Lucas ese hombree diodeno por la gloria de mi madre llev
 
 <table border="1" cellspacing="0" cellpadding="10" align="center">
     <tr>
-        <td><img src="img\f4.jpg" height="100"></td>
-        <td rowspan="3"><img src="img\f3.jpg" height="250"></td>
-        <td><img src="img\f1.jpg" height="100"></td>
+        <td><img src="..\img\f4.jpg" height="100"></td>
+        <td rowspan="3"><img src="..\img\f3.jpg" height="250"></td>
+        <td><img src="..\img\f1.jpg" height="100"></td>
     </tr>
     <tr>
-        <td><img src="img\f2.jpg" height="100"></td>
-        <td><img src="img\f5.jpg" height="100"></td>
+        <td><img src="..\img\f2.jpg" height="100"></td>
+        <td><img src="..\img\f5.jpg" height="100"></td>
     </tr>
 
 </table>
@@ -282,47 +290,89 @@ Qui torpedo hasta luego Lucas ese hombree diodeno por la gloria de mi madre llev
   <button><a href="..\index.html">VOLVER</a></button>
     
 <style>
-  h1 { 
+tortilla h1 { 
      background: blue; 
+     color: white;
 } 
-h2 { 
+tortilla h2 { 
      background: red; 
      color: rgba(0,0,0,0.4); 
 } 
-p { 
+tortilla p { 
      font-family: Verdana Helvetica sans-serif;
      font-size: 1.15em; 
      font-weight: bold; text-align: center; 
 } 
-ul { 
+tortilla ul { 
      font-style: italic; 
      text-shadow: 2px 2px 4px red; 
 } 
-ol {
+tortilla ol {
      text-shadow: 2px 2px 5px darkblue; 
 }
 </style>
-<h1>Receta tortilla francesa</h1>
-<p>Ingredientes:</p>
-<ul>
-  <li>Huevos</li>
-  <li>Aceite</li>
-  <li>Sal</li>
-</ul>
-<ol>
-  <li>Calentar el aceite en una sartén</li>
-  <li>Cascar el huevo y batirlo</li>
-  <li>Verter el hueveo batido en la sartén</li>
-  <li>Esperar un par de minutos, voltear y volver a esperar.</li>
-</ol>
-<h2>Servir con mayonesa, tomate o jamón</h2>
-<ul>
-  <li>Cambiar las cabeceras H1 fondo azul y la etiqueta H2 a fondo rojo. Si ves que el texto y el fondo tienen poco contraste, prueba a poner el color del texto en blanco.</li>
-  <li>En las etiquetas P, cambia el tipo de letra, su tamaño algo mayor y en negrita, Céntralas también.&nbsp;</li>
-  <li>La lista desordenada en cursiva y sombra roja.</li>
-  <li>La lista ordenada, con algo de sombra azul.</li>
-  <li>La etiqueta H2 con la letra un poco transparente.</li>
-</ul>
+<tortilla>
+  <h1>Receta tortilla francesa</h1>
+  <p>Ingredientes:</p>
+  <ul>
+    <li>Huevos</li>
+    <li>Aceite</li>
+    <li>Sal</li>
+  </ul>
+  <ol>
+    <li>Calentar el aceite en una sartén</li>
+    <li>Cascar el huevo y batirlo</li>
+    <li>Verter el hueveo batido en la sartén</li>
+    <li>Esperar un par de minutos, voltear y volver a esperar.</li>
+  </ol>
+  <h2>Servir con mayonesa, tomate o jamón</h2>
+</tortilla>
+<bordes>
+  <style>
+    bordes div{
+      width: 100%;
+      height: 100px;
+      margin: 10px ;
+      padding: 10px;
+    }
+
+    bordes #div1 {
+      border-left: 2px solid blue;
+      border-top: dashed green 2px;
+      border-right: 2px dotted red;
+      border-bottom: solid black 2px;
+    }
+    bordes #div2 {
+      border: solid teal 2px;
+      border-radius: 10px;
+    }
+  </style>
+  <h2>BORDES</h2>
+  <div id="div1">Bloque 1</div>
+  <div id="div2">Bloque 2</div>
+</bordes>
+
+<bloques>
+  <style>
+    bloques div{
+      padding: 40px 20px;
+      background-color: blue;
+      color: white;
+      display: inline-block;
+    }
+    #divRelative {
+      background-color: red;
+      position: relative;
+      /* fixed deja el elemento fijo en la pantalla */
+      top: 20px;
+      left: 2px;
+    }
+
+  </style>
+  <div id="div1">Bloque 1</div>
+  <div id="divRelative">Bloque Relativo</div>
+  <div id="div2">Bloque 2</div>
+</bloques>
 </body>
 
 </html>
