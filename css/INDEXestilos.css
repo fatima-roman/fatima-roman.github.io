@@ -1,4 +1,39 @@
+@font-face{
+    font-family: 'MonsterHighEmojis';
+    src: url('MonsterHigh.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: 'MonsterHigh';
+    src: url('runytunesrevisited.regular.ttf') format('trueType');
+    font-weight: bold;
+    font-style: normal;
+}
+
 a:hover{
     background-color: #2c063b;
     color: #ffffff;
+}
+
+h1 {
+    font-family: 'MonsterHigh', sans-serif;
+}
+
+body{
+    background-color: #f8ebff;
+    text-align: left;
+}
+
+li {
+    margin: 15px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
+h6 {
+    color: gray;
+    font-family: 'MonsterHighEmojis', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 20px;
 }
