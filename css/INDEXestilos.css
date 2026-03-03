@@ -192,3 +192,18 @@ body {
 #CodeFest{
         text-align: center;
 }
+
+/* Simple cursor styles */
+.cursor-dot,
+.cursor-outline {
+    position: fixed;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+.cursor-dot { width:8px; height:8px; border-radius:50%; background:#2c063b; transition:transform .12s, background .12s }
+.cursor-outline { width:36px; height:36px; border-radius:50%; border:2px solid #2c063b; transition:transform .18s, border-color .18s }
+body.cursor-hover .cursor-outline { transform: translate(-50%, -50%) scale(1.4); border-color: #fff }
+body.cursor-hover .cursor-dot { transform: translate(-50%, -50%) scale(.9); background:#fff }

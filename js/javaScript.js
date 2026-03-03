@@ -25,3 +25,16 @@ function animateOutline() {
     requestAnimationFrame(animateOutline);
 }
 animateOutline();
+
+// Efectos hover en elementos interactivos
+const hoverElements = document.querySelectorAll('a, button, .badge, .project');
+
+hoverElements.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+        document.body.classList.add('cursor-hover');
+    });
+    
+    el.addEventListener('mouseleave', () => {
+        document.body.classList.remove('cursor-hover');
+    });
+});
