@@ -55,9 +55,6 @@ if (nombre == invitados){
 
 
 //Números impares
-//Solicita un número y muestra todos los impares desde el 1 hasta ese número incluido.
-//  Vamos a obligar a introducir sólo números positivos, en caso contrario, 
-// se mostrará un mensaje y se volverá a solicitar un número.
 num1 = parseInt(prompt("Introduce un número positivo."));
 while (num1 <= 0 || isNaN(num1)) {
     alert("Por favor, introduce un número positivo.");
