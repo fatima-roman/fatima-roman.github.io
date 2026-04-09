@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perros API Básico</title>
+  <style>
+    h1{
+        text-align: center;
+        color: white;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        margin-bottom: 30px;
+    }
+    body {
+        font-family: 'Segoe UI', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        background: linear-gradient(135deg, rgb(173, 159, 173), rgb(200, 180, 200));
+        margin: 20px;
+        min-height: 100vh;
+    }
+    .contenedor {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background: linear-gradient(135deg, rgb(88, 71, 104), rgb(100, 80, 120));
+        margin-left: 20%;
+        margin-right: 20%;
+        border-radius: 25px;
+        padding: 30px;
+        color: white;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        backdrop-filter: blur(10px);
+    }
+    select, button {
+        border-radius: 30px;
+        padding: 12px 20px;
+        margin: 10px;
+        background: linear-gradient(135deg, rgb(210, 200, 220), rgb(230, 220, 240));
+        border: 2px solid rgb(63, 51, 75);
+        font-size: 16px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        cursor: pointer;
+    }
+    button:hover {
+        background: linear-gradient(135deg, rgb(63, 51, 75), rgb(80, 60, 90));
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+    img {
+        margin-top: 30px;
+        width: 100%;
+        max-width: 500px;
+        height: 350px;
+        object-fit: cover;
+        border-radius: 25px;
+        border: 2px solid rgba(255,255,255,0.2);
+        background: linear-gradient(135deg, rgb(240, 230, 250), rgb(250, 240, 255));
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        transition: transform 0.3s ease;
+    }
+    #estado {
+        margin-top: 25px;
+        color: white;
+        font-weight: 600;
+        text-align: center;
+        font-style: italic;
+        opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="contenedor">
+    <!-- Título principal de la página -->
+    <h1>API de Perros</h1>
+
+    <!-- Botón para pedir una imagen aleatoria -->
+    <button id="btnAleatorio">Perro aleatorio</button>
+
+    <br>
+
+    <!-- Selector donde se cargarán las razas y subrazas -->
+    <select id="selectorRazas">
+      <option value="">Cargando razas...</option>
+    </select>
+
+    <!-- Texto para mostrar mensajes -->
+    <p id="estado">Esperando acción...</p>
+
+    <!-- Imagen vacía al principio -->
+    <img id="imagenPerro" src="" alt="Aquí aparecerá un perro">
+  </div>
+
+  <script>
+    // Guardamos en variables los elementos del HTML que vamos a usar
+    const btnAleatorio = document.getElementById("btnAleatorio");
+    const selectorRazas = document.getElementById("selectorRazas");
+    const imagenPerro = document.getElementById("imagenPerro");
+    const estado = document.getElementById("estado");
+
+    // Esta función cambia el mensaje de estado
+    function cambiarEstado(texto) {
+      estado.textContent = texto;
+    }
+
+    // Esta función carga todas las razas desde la API
+    async function cargarRazas() {
+      try {
+        // Mostramos mensaje mientras carga
+        cambiarEstado("Cargando razas...");
+
+        // Hacemos la petición GET a la API
+        const respuesta = await fetch("https://dog.ceo/api/breeds/list/all");
+
+        // Convertimos la respuesta a JSON
+        const datos = await respuesta.json();
+
+        // Vaciamos el selector antes de meter las opciones nuevas
+        selectorRazas.innerHTML = '<option value="">-- Selecciona una raza --</option>';
+
+        // Recorremos todas las razas que devuelve la API
+        for (let raza in datos.message) {
+          // Guardamos las subrazas de esa raza
+          let subrazas = datos.message[raza];
+
+          // Si no tiene subrazas, añadimos una opción normal
+          if (subrazas.length === 0) {
+            let opcion = document.createElement("option");
+            opcion.value = raza; // guardamos solo la raza
+            opcion.textContent = raza;
+            selectorRazas.appendChild(opcion);
+          } else {
+            // Si tiene subrazas, añadimos una opción por cada subraza
+            for (let subraza of subrazas) {
+              let opcion = document.createElement("option");
+
+              // Guardamos raza y subraza juntas separadas por |
+              opcion.value = raza + "|" + subraza;
+
+              // Texto que verá el usuario
+              opcion.textContent = subraza + " (" + raza + ")";
+
+              selectorRazas.appendChild(opcion);
+            }
+          }
+        }
+
+        // Cambiamos el estado cuando termina
+        cambiarEstado("Razas cargadas correctamente");
+      } catch (error) {
+        // Si hay fallo, mostramos mensaje de error
+        cambiarEstado("Error al cargar las razas");
+      }
+    }
+
+    // Esta función carga una imagen a partir de una URL de la API
+    async function cargarImagen(url) {
+      try {
+        // Avisamos de que estamos cargando
+        cambiarEstado("Cargando imagen...");
+
+        // Hacemos la petición a la URL que nos pasen
+        const respuesta = await fetch(url);
+
+        // Convertimos la respuesta a JSON
+        const datos = await respuesta.json();
+
+        // La URL real de la imagen viene en datos.message
+        imagenPerro.src = datos.message;
+
+        // Mensaje de éxito
+        cambiarEstado("Imagen cargada correctamente");
+      } catch (error) {
+        // Si falla algo, avisamos
+        cambiarEstado("Error al cargar la imagen");
+      }
+    }
+
+    // Evento del botón aleatorio
+    btnAleatorio.addEventListener("click", function () {
+      // URL para pedir un perro aleatorio
+      const url = "https://dog.ceo/api/breeds/image/random";
+
+      // Llamamos a la función que carga la imagen
+      cargarImagen(url);
+    });
+
+    // Evento cuando cambia el selector
+    selectorRazas.addEventListener("change", function () {
+      // Guardamos lo que el usuario ha seleccionado
+      const valor = selectorRazas.value;
+
+      // Si no ha seleccionado nada, no hacemos nada
+      if (valor === "") {
+        return;
+      }
+
+      let url = "";
+
+      // Si el valor contiene | significa que hay raza y subraza
+      if (valor.includes("|")) {
+        // Separamos raza y subraza
+        const partes = valor.split("|");
+        const raza = partes[0];
+        const subraza = partes[1];
+
+        // Construimos la URL para raza + subraza
+        url = `https://dog.ceo/api/breed/${raza}/${subraza}/images/random`;
+      } else {
+        // Si no hay |, solo hay raza normal
+        const raza = valor;
+
+        // Construimos la URL para solo raza
+        url = `https://dog.ceo/api/breed/${raza}/images/random`;
+      }
+
+      // Cargamos la imagen según la opción elegida
+      cargarImagen(url);
+    });
+
+    // Llamamos a la función al abrir la página para llenar el selector
+    cargarRazas();
+  </script>
+
+</body>
+</html>
