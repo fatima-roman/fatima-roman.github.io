@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Futbolero</title>
+  <style>
+    h1 {
+        text-align: center;
+        color: white;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        margin-bottom: 30px;
+    }
+
+    body {
+        font-family: 'Segoe UI', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        background: linear-gradient(135deg, rgb(173, 159, 173), rgb(200, 180, 200));
+        margin: 20px;
+        min-height: 100vh;
+    }
+
+    .contenedor {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background: linear-gradient(135deg, rgb(88, 71, 104), rgb(100, 80, 120));
+        margin-left: 20%;
+        margin-right: 20%;
+        border-radius: 25px;
+        padding: 30px;
+        color: white;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+    }
+
+    select, button {
+        border-radius: 30px;
+        padding: 12px 20px;
+        margin: 10px;
+        background: linear-gradient(135deg, rgb(210, 200, 220), rgb(230, 220, 240));
+        border: 2px solid rgb(63, 51, 75);
+        font-size: 16px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: linear-gradient(135deg, rgb(63, 51, 75), rgb(80, 60, 90));
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    img {
+        margin-top: 20px;
+        width: 200px;
+        height: 200px;
+        object-fit: contain;
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 10px;
+    }
+
+    #estado {
+        margin-top: 25px;
+        color: white;
+        font-weight: 600;
+        text-align: center;
+        font-style: italic;
+        opacity: 0.9;
+        font-size: 14px;
+    }
+
+    #resultado {
+        margin-top: 30px;
+        text-align: center;
+        width: 100%;
+        animation: fadeIn 0.5s ease;
+    }
+
+    #resultado h2 {
+        margin-top: 20px;
+        font-size: 28px;
+        color: #FFD700;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    #resultado p {
+        margin: 10px 0;
+        line-height: 1.6;
+        font-size: 15px;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="contenedor">
+    <!-- Título principal de la página -->
+    <h1>API de Futboleros</h1>
+
+    <br>
+
+    <!-- Selector donde se cargarán los equipos -->
+    <select id="equipo">
+      <option value="">Cargando equipos...</option>
+    </select>
+
+    <!-- Texto para mostrar mensajes -->
+    <p id="estado">Esperando acción...</p>
+
+    <!-- Resultado vacio -->
+    <div id="resultado">Aquí aparecerá el equipo seleccionado</div>
+  </div>
+
+  <script>
+    const equipo = document.getElementById("equipo");
+    const resultado = document.getElementById("resultado");
+    const estado = document.getElementById("estado");
+
+    // 1) Cargar equipos de la Premier League en el select
+    async function cargarEquipos() {
+      try {
+        const url = "https://www.thesportsdb.com/api/v1/json/3/search_all_teams.php?l=English_Premier_League";
+        const respuesta = await fetch(url);
+        const datos = await respuesta.json();
+
+        // Dejamos una opción inicial
+        equipo.innerHTML = '<option value="">-- Selecciona un equipo --</option>';
+
+        // Recorremos el array teams
+        datos.teams.forEach(team => {
+          const option = document.createElement("option");
+          option.value = team.strTeam;
+          option.textContent = team.strTeam;
+          equipo.appendChild(option);
+        });
+
+        estado.textContent = "✅ Equipos cargados. Selecciona uno";
+
+      } catch (error) {
+        estado.textContent = "❌ Error al cargar la lista de equipos";
+        console.error("Error:", error);
+      }
+    }
+
+    // 2) Cargar la información del equipo elegido
+    async function cargarInfoEquipo(nombreEquipo) {
+      try {
+        estado.textContent = "Cargando información...";
+
+        const url = `https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=${encodeURIComponent(nombreEquipo)}`;
+        const respuesta = await fetch(url);
+        const datos = await respuesta.json();
+
+        // Comprobamos si hay resultados
+        if (!datos.teams || datos.teams.length === 0) {
+          resultado.innerHTML = "<p>❌ No se encontró información del equipo.</p>";
+          estado.textContent = "Equipo no encontrado";
+          return;
+        }
+
+        // Cogemos el primer equipo
+        const team = datos.teams[0];
+
+        // Pintamos la información
+        resultado.innerHTML = `
+          <h2>${team.strTeam}</h2>
+          <img src="${team.strBadge}" alt="Escudo de ${team.strTeam}">
+          <p><strong>Liga:</strong> ${team.strLeague}</p>
+          <p><strong>País:</strong> ${team.strCountry}</p>
+          <p><strong>Estadio:</strong> ${team.strStadium}</p>
+          <p><strong>Año de fundación:</strong> ${team.intFormedYear}</p>
+          <p><strong>Descripción:</strong> ${team.strDescriptionEN || "No disponible"}</p>
+        `;
+
+        estado.textContent = `✅ Información de ${team.strTeam} cargada`;
+
+      } catch (error) {
+        resultado.innerHTML = "<p>❌ Error al cargar los datos del equipo.</p>";
+        estado.textContent = "Error en la carga";
+        console.error("Error:", error);
+      }
+    }
+
+    // 3) Event listeners
+    equipo.addEventListener("change", function () {
+      const nombreEquipo = equipo.value;
+
+      if (nombreEquipo === "") {
+        resultado.innerHTML = "";
+        estado.textContent = "Selecciona un equipo";
+        return;
+      }
+
+      cargarInfoEquipo(nombreEquipo);
+    });
+
+    // 4) Al abrir la página, llenamos el select
+    cargarEquipos();
+  </script>
+
+</body>
+</html>
