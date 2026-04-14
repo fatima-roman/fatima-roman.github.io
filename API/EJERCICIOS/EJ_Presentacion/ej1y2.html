@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 1 y 2</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+    <h1>Ejercicio 1 y 2</h1>
+    <form id="input">
+        <input type="text" id="nombre" placeholder="Nombre">
+        <input type="text" id="apellidos" placeholder="Apellidos">
+        <input type="number" id="edad" placeholder="Edad">
+        <input type="text" id="ciudad" placeholder="Ciudad">
+        <button type="button" id="convertirObjetoAJSON">Convertir a JSON</button>
+        <button type="button" id="convertirJSONAObjeto">Convertir a JS</button>
+    </form>
+
+    <div id="resultado"></div>
+
+    <table id="tabla">
+        <thead>
+            <tr>
+                <th id="th-nombre">Nombre</th>
+                <th id="th-apellidos">Apellidos</th>
+                <th id="th-edad">Edad</th>
+                <th id="th-ciudad">Ciudad</th>
+            </tr>
+        </thead>
+        <tbody id="tbody-datos">
+        </tbody>
+    </table>
+
+    <script>
+        
+        $(document).ready(function() {
+            $("#convertirObjetoAJSON").click(convertirObjetoAJSON);
+            $("#convertirJSONAObjeto").click(convertirJSONAObjeto);
+        });
+        // Funciones requeridas por el enunciado
+        function serializar(obj) {
+            return JSON.stringify(obj);
+        }
+        //Stringify convierte un objeto JS a JSON, es decir, serializa el objeto
+
+        function deserializar(objJson) {
+            return JSON.parse(objJson);
+        }
+        //parse convierte un JSON a un objeto JS, es decir, deserializa el JSON
+
+        // Recibe un objeto, lo serializa y lo muestra por consola
+        function enviar(obj) {
+            console.log("Serializado: " + obj.nombre);
+            return serializar(obj);
+        }
+        
+        //Recibe un JSON, lo deserializa y lo muestra por consola
+        function recibir(json_serializado) {
+            console.log("Deserializado: " + json_serializado);
+            return deserializar(json_serializado);
+        }
+
+        // Recoge los datos del formulario y convierte a JSON usando enviar()
+        function convertirObjetoAJSON() {
+            const objeto = {
+                nombre: $("#nombre").val(),
+                apellidos: $("#apellidos").val(),
+                edad: parseInt($("#edad").val()),
+                ciudad: $("#ciudad").val()
+            };
+            const json = enviar(objeto);
+            $("#resultado").text(json); //Le devuelve el resultado de serializar
+        }
+
+        // Deserializa el JSON del resultado usando recibir() y lo mete en la tabla
+        function convertirJSONAObjeto() {
+            const json = $("#resultado").text();
+            const objeto_recuperado = recibir(json);
+            $("#resultado").text(
+                `Nombre: ${objeto_recuperado.nombre}, Apellidos: ${objeto_recuperado.apellidos}, Edad: ${objeto_recuperado.edad}, Ciudad: ${objeto_recuperado.ciudad}`
+            );
+            aniadirTabla(objeto_recuperado);
+        }
+
+        //Función para generar una fila de la tabla a partir del objeto recuperado
+        function generaTr(objeto_recuperado) {
+            return "<tr>" +
+                `<td>${objeto_recuperado.nombre}</td>` +
+                `<td>${objeto_recuperado.apellidos}</td>` +
+                `<td>${objeto_recuperado.edad}</td>` +
+                `<td>${objeto_recuperado.ciudad}</td>` +
+                "</tr>";
+        }
+
+        // jQuery para insertar la fila en tbody
+        function aniadirTabla(objeto) {
+            $("#tbody-datos").text("");  //Si se borra esta linea se va acumulando la tabla cada vez que se pulsa el botón 
+            // convertir a JS, si se deja, se borra la tabla cada vez y solo se muestra el último objeto recuperado
+            $("#tbody-datos").append(generaTr(objeto));
+        }
+    </script>
+
+    <style>
+        h1{
+            text-align: center;
+        }
+        body {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            background-color: rgb(173, 159, 173);
+        }
+        div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: rgb(88, 71, 104);
+            margin-left: 20%;
+            margin-right: 20%;
+            border-radius: 20px;
+            padding: 10px;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: rgb(88, 71, 104);
+            margin-left: 20%;
+            margin-right: 20%;
+            border-radius: 20px;
+            padding: 10px;
+        }
+        #resultado {
+            margin-top: 20px;
+            background-color: rgb(199, 186, 211);
+            padding: 10px;
+            border: 3px solid rgb(88, 71, 104);
+            border-radius: 20px;
+            margin-left: 15%;
+            margin-right: 15%;
+        }
+        input {
+            border-radius: 30px;
+            padding: 10px;
+            margin: 3px;
+            background-color: rgb(199, 186, 211);
+        }
+        button {
+            border-radius: 30px;
+            padding: 10px;
+            margin: 3px;
+            background-color: rgb(199, 186, 211);
+            border: 3px solid rgb(63, 51, 75);
+        }
+        button:hover {
+            background-color: rgb(63, 51, 75);
+            color: white;
+        }
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid rgb(63, 51, 75);
+            padding: 8px;
+            text-align: left;
+        }
+        thead {
+            background-color: rgb(88, 71, 104);
+            color: white;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: rgb(173, 159, 173);
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        footer a {
+            display: inline-block;
+        }
+    </style>
+</body>
+<footer>
+    <p><a href="../index.html">Volver al inicio</a></p>
+</footer>
+</html>

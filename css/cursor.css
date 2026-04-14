@@ -1,0 +1,32 @@
+/* ===== CURSOR ===== */
+.cursor-dot,
+.cursor-outline {
+    position: fixed;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+.cursor-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgb(88, 71, 104);
+    transition: transform .12s, background .12s;
+}
+.cursor-outline {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid rgb(88, 71, 104);
+    transition: transform .18s, border-color .18s;
+}
+body.cursor-hover .cursor-outline {
+    transform: translate(-50%, -50%) scale(1.4);
+    border-color: rgb(63, 51, 75);
+}
+body.cursor-hover .cursor-dot {
+    transform: translate(-50%, -50%) scale(.9);
+    background: rgb(63, 51, 75);
+}

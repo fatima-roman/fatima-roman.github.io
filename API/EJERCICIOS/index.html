@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
+<head>
+    <link rel="stylesheet" href="..\..\css\cursor.css">
     <meta charset="UTF-8">
     <title>Ejercicios API</title>
     <style>
@@ -11,28 +12,70 @@
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             background-color: rgb(173, 159, 173);
         }
-        ul {
+
+        /* Contenedor de las dos listas en fila */
+        .listas-wrapper {
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
+            gap: 24px;
+            margin: 30px 10%;
+            flex-wrap: wrap;
+        }
+
+        /* Cada bloque de lista */
+        .lista-card {
+            display: flex;
             flex-direction: column;
             background-color: rgb(88, 71, 104);
-            margin-left: 20%;
-            margin-right: 20%;
             border-radius: 20px;
-            padding: 10px;
+            padding: 20px 28px;
+            flex: 1;
+            min-width: 220px;
         }
-        li {
-            margin: 10px;
-        }
-        a {
-            text-decoration: none;
-            color: white;
-            font-size: 18px;
-        }
-        a:hover {
+
+        .lista-card h2 {
+            text-align: center;
             color: rgb(199, 186, 211);
+            font-size: 16px;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(199, 186, 211, 0.3);
         }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        li {
+            margin: 0;
+        }
+
+        a {
+            display: block;
+            text-decoration: none;
+            color: rgb(63, 51, 75);
+            font-size: 15px;
+            font-weight: bold;
+            background-color: rgb(199, 186, 211);
+            border: 3px solid rgb(63, 51, 75);
+            border-radius: 30px;
+            padding: 9px 16px;
+            transition: background-color .18s, color .18s, transform .15s;
+        }
+
+        a:hover {
+            background-color: rgb(63, 51, 75);
+            color: rgb(199, 186, 211);
+            transform: translateX(4px);
+        }
+
         .caja {
             background-color: rgb(88, 71, 104);
             padding: 10px;
@@ -43,14 +86,54 @@
             color: white;
         }
 
-        </style>
-    </head>
-    <body>
-        <h1>Ejercicios API</h1>
-        <ul>
-            <li><a href="Ej\EJ01.html">Ejercicio Perros</a></li>
-            <li><a href="Ej\EJ02.html">Ejercicio Usuarios</a></li>
-            <li><a href="Ej\EJ03.html">Ejercicio Países</a></li>
-        </ul>
-    </body>
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: rgb(173, 159, 173);
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        footer a {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cursor personalizado -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <h1>Ejercicios API</h1>
+
+    <div class="listas-wrapper">
+
+        <!-- LISTA 1 -->
+        <div class="lista-card">
+            <h2>EJERCICIOS BOLETÍN</h2>
+            <ul>
+                <li><a href="EJ_boletin\EJ01.html">Ejercicio Perros</a></li>
+                <li><a href="EJ_boletin\EJ02.html">Ejercicio Usuarios</a></li>
+                <li><a href="EJ_boletin\EJ03.html">Ejercicio Pases</a></li>
+            </ul>
+        </div>
+
+        <!-- LISTA 2 -->
+        <div class="lista-card">
+            <h2>EJERCICIOS PRESENTACIÓN</h2>
+            <ul>
+                <li><a href="EJ_Presentacion\ej1y2.html">Ejercicio 1 + RETO </a></li>
+                <li><a href="EJ_Presentacion\ej3.html">Ejercicio Usuarios</a></li>
+                <li><a href="EJ_Presentacion\ej4.html">Ejercicio Pases</a></li>
+            </ul>
+        </div>
+
+    </div>
+    <script src="../../js/javaScript.js"></script>
+</body>
+<footer>
+    <p><a href="../../index.html">Volver al inicio</a></p>
+</footer>
 </html>
