@@ -87,12 +87,12 @@
         // Recoge los datos del formulario y convierte a JSON usando enviar()
         function convertirObjetoAJSON() {
             if (!comprobarCampos()) return;
-            const objeto = {
+            const objeto = [{
                 nombre: $("#nombre").val(),
                 apellidos: $("#apellidos").val(),
                 edad: parseInt($("#edad").val()),
                 ciudad: $("#ciudad").val()
-            };
+            }];
             const json = enviar(objeto);
             $("#resultado").text(json); //Le devuelve el resultado de serializar
         }
@@ -140,10 +140,7 @@
 
         // jQuery para insertar la fila en tbody
         function aniadirTabla(objeto) {
-            const tabla = []; 
-            tabla.push(objeto);
-            tabla.forEach();
-            $("#tbody-datos").append(generaTr(objeto));
+           $("#tbody-datos").append(generaTr(objeto));
             calcularEstadisticas(objeto);
         }
         
