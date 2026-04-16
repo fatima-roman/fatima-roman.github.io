@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ejercicio 1 y 2</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <link rel="stylesheet" href="../CSS/footer_volver.css">
 </head>
 <body>
     <h1>Ejercicio 1 y 2</h1>
@@ -15,12 +14,13 @@
         <input type="text" id="apellidos" placeholder="Apellidos">
         <input type="number" id="edad" placeholder="Edad">
         <input type="text" id="ciudad" placeholder="Ciudad">
-        <button type="button" id="convertirObjetoAJSON">Convertir a JSON</button>
-        <button type="button" id="convertirJSONAObjeto">Convertir a JS</button>
+        <button type="button" onclick="convertirObjetoAJSON()">Convertir a JSON</button> 
+        <!-- Con onclick  pero sin type="button" se recarga -->
+        <button type="button" onclick="convertirJSONAObjeto()">Convertir a JS</button>
     </form>
 
     <div id="resultado"></div>
-
+<div id="tablaysuma">
     <table id="tabla">
         <thead>
             <tr>
@@ -33,13 +33,32 @@
         <tbody id="tbody-datos">
         </tbody>
     </table>
+    <div id="extra">
+
+    </div>
+    </div>
+</div>
 
     <script>
-        
-        $(document).ready(function() {
-            $("#convertirObjetoAJSON").click(convertirObjetoAJSON);
-            $("#convertirJSONAObjeto").click(convertirJSONAObjeto);
-        });
+        function comprobarCampos() {
+            if ($("#nombre").val() === "") {
+                alert("El campo nombre es obligatorio");
+                return false;
+            }
+            if ($("#apellidos").val() === "") {
+                alert("El campo apellidos es obligatorio");
+                return false;
+            }
+            if ($("#edad").val() === "") {
+                alert("El campo edad es obligatorio");
+                return false;
+            }
+            if ($("#ciudad").val() === "") {
+                alert("El campo ciudad es obligatorio");
+                return false;
+            }
+            return true;
+    }
         // Funciones requeridas por el enunciado
         function serializar(obj) {
             return JSON.stringify(obj);
@@ -65,6 +84,7 @@
 
         // Recoge los datos del formulario y convierte a JSON usando enviar()
         function convertirObjetoAJSON() {
+            if (!comprobarCampos()) return;
             const objeto = {
                 nombre: $("#nombre").val(),
                 apellidos: $("#apellidos").val(),
@@ -94,34 +114,46 @@
                 `<td>${objeto_recuperado.ciudad}</td>` +
                 "</tr>";
         }
+        //Muestra en un elemento adicional (p, div, span, …) o en consola (console.log) la suma de edades, media, máximo y mínimo.
+//Suma = 120		Máximo = 35
+//Media = 30		Mínimo = 15
+        function calcularEstadisticas(objeto) {
+            const edades = [];
+            $("#tbody-datos tr").each(function() {
+                const edad = parseInt($(this).find("td:nth-child(3)").text());
+                edades.push(edad);
+            });
+            edades.push(objeto.edad); // Añadir la edad del nuevo objeto
+            const suma = edades.reduce((a, b) => a + b, 0);
+            const media = suma / edades.length;
+            const maximo = Math.max(...edades);
+            const minimo = Math.min(...edades);
+            $("#extra").html(
+                `Suma = ${suma} <br> Media = ${media.toFixed(2)} <br> Máximo = ${maximo} <br> Mínimo = ${minimo}`
+            );
+        }
 
         // jQuery para insertar la fila en tbody
         function aniadirTabla(objeto) {
-            //$("#tbody-datos").text("");  //Si se borra esta linea se va acumulando la tabla cada vez que se pulsa el botón 
+            $("#tbody-datos").text("");  //Si se borra esta linea se va acumulando la tabla cada vez que se pulsa el botón 
             // convertir a JS, si se deja, se borra la tabla cada vez y solo se muestra el último objeto recuperado
             $("#tbody-datos").append(generaTr(objeto));
+            $("#extra").text(""); // Limpiar estadísticas anteriores
+            $("#extra").text(calcularEstadisticas(objeto)); // Limpiar estadísticas anteriores
+             // Calcular y mostrar estadísticas actualizadas
         }
+        
     </script>
 
     <style>
-        h1{
-            text-align: center;
+        h1 {
+    text-align: center;
         }
         body {
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             background-color: rgb(173, 159, 173);
         }
-        div {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            background-color: rgb(88, 71, 104);
-            margin-left: 20%;
-            margin-right: 20%;
-            border-radius: 20px;
-            padding: 10px;
-        }
+
         form {
             display: flex;
             justify-content: center;
@@ -134,6 +166,8 @@
             padding: 10px;
         }
         #resultado {
+            display: flex;
+            justify-content: center;              
             margin-top: 20px;
             background-color: rgb(199, 186, 211);
             padding: 10px;
@@ -159,10 +193,23 @@
             background-color: rgb(63, 51, 75);
             color: white;
         }
+        #tablaysuma {
+            display: flex;
+            justify-content: center;             
+            align-items: center;                
+            flex-direction: row;
+            gap: 20px;                          
+            background-color: rgb(88, 71, 104);
+            margin-left: 10%;
+            margin-right: 10%;
+            margin-top: 20px;
+            border-radius: 20px;
+            padding: 20px;
+        }
         table {
             border-collapse: collapse;
-            width: 80%;
-            margin: 20px auto;
+            width: auto;                        
+            margin: 0;                          
         }
         th, td {
             border: 1px solid rgb(63, 51, 75);
@@ -173,9 +220,16 @@
             background-color: rgb(88, 71, 104);
             color: white;
         }
+        #extra {
+            background-color: rgb(199, 186, 211);
+            padding: 10px;
+            border: 3px solid rgb(88, 71, 104);
+            border-radius: 10px;
+            margin: 0;                           
+            min-width: 150px;
+            text-align: center;                 
+        }
+
     </style>
-    <footer>
-        <p><a href="../index.html">Volver al inicio</a></p>
-    </footer>
 </body>
 </html>

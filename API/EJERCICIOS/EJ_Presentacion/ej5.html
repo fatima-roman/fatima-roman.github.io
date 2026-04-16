@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 1</title>
+</head>
+<body>
+    <div id ="info">
+        <div id="puntos">Puntos: <span id="puntosValor">0</span></div>
+        <div id="puntosC">Puntos Cartera: <span id="puntosCartera">0</span></div>
+        <div id="numeroP">Partidas: <span id="numeroPartidas">0</span></div>
+        <div id="numeroPG">Partidas ganadas: <span id="numeroPartidasGanadas">0</span></div>
+    </div>
+    <form>
+        <input type="number" id="numero" placeholder="Introduce un número del 1 al 100">
+        <button type="button" id="comprobar" onclick="comprobarCampos()">Comprobar</button>
+        <button type="button" id="reiniciar" onclick="reiniciarJuego()">Reiniciar</button>
+    </form>
+    <div id="resultado"></div>
+    <div id="extra"></div>
+</body>
+<script>
+    let numeroAcierto = Math.floor(Math.random() * 100) + 1;
+    let puntosJugador = 0;
+    let puntosCartera =10;
+    let numeroPartidas = 0;
+    let numeroPartidasGanadas = 0;
+
+    function comprobarCampos() {
+        if (parseInt($("#numero").val()) == numeroAcierto) {
+            puntosJugador = puntosCartera;
+            let resultado = "¡Has acertado! El número era " + numeroAcierto + ". Has ganado " + puntosJugador + " puntos.";
+            $("#resultado").text(resultado);
+            numeroPartidasGanadas++;
+        }
+        if (puntosCartera <= 0) {
+            let resultado = "¡Has perdido! El número era " + numeroAcierto + ". No te quedan puntos en la cartera.";
+            $("#resultado").text(resultado);
+        }
+        if (parseInt($("#numero").val()) != numeroAcierto){
+            puntosCartera--;
+            let resultado = "¡Has fallado! El número era " + posicionNumero() + ". Te quedan " + puntosCartera + " puntos en la cartera.";
+            $("#resultado").text(resultado);
+        }
+        actualizarPuntos();
+        ocultarBotones();
+
+    }
+
+    function actualizarPuntos() {
+        $("#puntosValor").text(puntosJugador);
+        $("#puntosCartera").text(puntosCartera);
+        $("#numeroPartidas").text(numeroPartidas);
+        $("#numeroPartidasGanadas").text(numeroPartidasGanadas);
+        $("#extra").text(calcularEstadisticas());
+    }
+
+    function posicionNumero(){
+        let posicion;
+        if (parseInt($("#numero").val())>numeroAcierto){
+            posicion = "menor"
+        }
+        if (parseInt($("#numero").val())<numeroAcierto){
+            posicion = "mayor"
+        }
+        return posicion;
+    }
+
+    function reiniciarJuego() {
+        numeroAcierto = Math.floor(Math.random() * 100) + 1;
+        puntosCartera = 10;
+        numeroPartidas ++;
+        actualizarPuntos();
+        $("#resultado").text("");
+        $("#numero").val("");
+    }
+
+    function calcularEstadisticas() {
+        let resultado;
+        numeroPartidas = numeroPartidasGanadas + (numeroPartidas - numeroPartidasGanadas);
+        let porcentajeGanadas = (numeroPartidasGanadas / numeroPartidas) * 100;
+        resultado = porcentajeGanadas.toFixed(2);
+        if (isNaN(resultado)) {
+            resultado = 0;
+        }
+        return "Has ganado el " + resultado + "% de las partidas.";
+    }
+
+    function ocultarBotones() {
+        if (puntosCartera <= 0 && numeroAcierto != parseInt($("#numero").val())) {
+            $("#comprobar").hide();
+        } else {
+            $("#comprobar").show();
+        }
+    }
+
+</script>
+<style>
+    body {
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        margin: 20px;
+        background-color: rgb(199, 186, 211);
+    }
+
+    #info {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+    #puntos, #puntosC, #numeroP, #numeroPG {
+        margin-bottom: 10px;
+        background-color: rgb(88, 71, 104);
+        padding: 10px;
+        border-radius: 10px;
+        color: white;
+    }
+
+    form {
+        background-color: rgb(88, 71, 104);
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    input[type="number"] {
+        padding: 5px;
+        font-size: 16px;
+        width: 200px;
+        background-color: rgb(199, 186, 211);
+    }
+
+    button {
+        padding: 5px 10px;
+        font-size: 16px;
+        margin-left: 10px;
+        background-color: rgb(199, 186, 211);
+        border: 2px solid rgb(88, 71, 104);
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    #resultado {
+        font-size: 18px;
+        margin-top: 20px;
+        background-color: rgb(88, 71, 104);
+        padding: 10px;
+        border: 3px solid rgb(88, 71, 104);
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+    }
+
+    #extra {
+        font-size: 16px;
+        margin-top: 10px;
+        background-color: rgb(88, 71, 104);
+        padding: 10px;
+        border: 3px solid rgb(88, 71, 104);
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+</html>
