@@ -24,9 +24,9 @@
 }
 body.cursor-hover .cursor-outline {
     transform: translate(-50%, -50%) scale(1.4);
-    border-color: rgb(63, 51, 75);
+    border-color: rgb(198, 179, 216);
 }
 body.cursor-hover .cursor-dot {
     transform: translate(-50%, -50%) scale(.9);
-    background: rgb(63, 51, 75);
+    background: rgb(198, 179, 216);
 }

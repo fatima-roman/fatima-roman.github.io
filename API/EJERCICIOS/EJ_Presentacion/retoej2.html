@@ -132,8 +132,8 @@
             });
 
             const media = edades.length ? suma / edades.length : 0;
-            const maximo = edades.length ? Math.max(...edades) : 0;
-            const minimo = edades.length ? Math.min(...edades) : 0;
+            const maximo =  Math.max(...edades);
+            const minimo = Math.min(...edades) ;
 
             $("#extra").html(
                 `Suma = ${suma} <br> Media = ${media.toFixed(2)} <br> Máximo = ${maximo} <br> Mínimo = ${minimo}`
