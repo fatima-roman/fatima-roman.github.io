@@ -121,9 +121,6 @@
             const edades = [];
             $("#tbody-datos tr").each(function() {
                 const edad = parseInt($(this).find("td:nth-child(3)").text(), 10);
-                if (!isNaN(edad)) {
-                    edades.push(edad);
-                }
             });
 
             let suma = 0;
