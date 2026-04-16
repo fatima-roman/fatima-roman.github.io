@@ -121,6 +121,7 @@
             const edades = [];
             $("#tbody-datos tr").each(function() {
                 const edad = parseInt($(this).find("td:nth-child(3)").text(), 10);
+                edades.push(edad);
             });
 
             let suma = 0;
@@ -139,6 +140,9 @@
 
         // jQuery para insertar la fila en tbody
         function aniadirTabla(objeto) {
+            const tabla = []; 
+            tabla.push(objeto);
+            tabla.forEach();
             $("#tbody-datos").append(generaTr(objeto));
             calcularEstadisticas(objeto);
         }
