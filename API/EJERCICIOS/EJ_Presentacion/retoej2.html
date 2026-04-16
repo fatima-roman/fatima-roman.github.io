@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio 1 y 2</title>
+    <title>Ejercicio 2 reto</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="..\CSS\footer_volver.css">
 </head>
 <body>
-    <h1>Ejercicio 1 y 2</h1>
+    <h1>Ejercicio 2 reto</h1>
     <form id="input">
         <input type="text" id="nombre" placeholder="Nombre">
         <input type="text" id="apellidos" placeholder="Apellidos">
@@ -38,7 +39,9 @@
     </div>
     </div>
 </div>
-
+    <footer>
+        <p><a href="../index.html">Volver al inicio</a></p>
+    </footer>
     <script>
         function comprobarCampos() {
             if ($("#nombre").val() === "") {
@@ -117,17 +120,24 @@
         //Muestra en un elemento adicional (p, div, span, …) o en consola (console.log) la suma de edades, media, máximo y mínimo.
 //Suma = 120		Máximo = 35
 //Media = 30		Mínimo = 15
-        function calcularEstadisticas(objeto) {
+        function calcularEstadisticas() {
             const edades = [];
             $("#tbody-datos tr").each(function() {
-                const edad = parseInt($(this).find("td:nth-child(3)").text());
-                edades.push(edad);
+                const edad = parseInt($(this).find("td:nth-child(3)").text(), 10);
+                if (!isNaN(edad)) {
+                    edades.push(edad);
+                }
             });
-            edades.push(objeto.edad); // Añadir la edad del nuevo objeto
-            const suma = edades.reduce((a, b) => a + b, 0);
-            const media = suma / edades.length;
-            const maximo = Math.max(...edades);
-            const minimo = Math.min(...edades);
+
+            let suma = 0;
+            edades.forEach(function(edad) {
+                suma += edad;
+            });
+
+            const media = edades.length ? suma / edades.length : 0;
+            const maximo = edades.length ? Math.max(...edades) : 0;
+            const minimo = edades.length ? Math.min(...edades) : 0;
+
             $("#extra").html(
                 `Suma = ${suma} <br> Media = ${media.toFixed(2)} <br> Máximo = ${maximo} <br> Mínimo = ${minimo}`
             );
@@ -135,12 +145,8 @@
 
         // jQuery para insertar la fila en tbody
         function aniadirTabla(objeto) {
-            $("#tbody-datos").text("");  //Si se borra esta linea se va acumulando la tabla cada vez que se pulsa el botón 
-            // convertir a JS, si se deja, se borra la tabla cada vez y solo se muestra el último objeto recuperado
             $("#tbody-datos").append(generaTr(objeto));
-            $("#extra").text(""); // Limpiar estadísticas anteriores
-            $("#extra").text(calcularEstadisticas(objeto)); // Limpiar estadísticas anteriores
-             // Calcular y mostrar estadísticas actualizadas
+            calcularEstadisticas();
         }
         
     </script>
