@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ejercicio 2 reto</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <link rel="stylesheet" href="..\CSS\footer_volver.css">
+    <link rel="stylesheet" href="../CSS/footer_volver.css">
 </head>
 <body>
     <h1>Ejercicio 2 reto</h1>
@@ -15,167 +15,140 @@
         <input type="text" id="apellidos" placeholder="Apellidos">
         <input type="number" id="edad" placeholder="Edad">
         <input type="text" id="ciudad" placeholder="Ciudad">
-        <button type="button" onclick="convertirObjetoAJSON()">Convertir a JSON</button> 
-        <!-- Con onclick  pero sin type="button" se recarga -->
+        <button type="button" onclick="convertirObjetoAJSON()">Convertir a JSON</button>
         <button type="button" onclick="convertirJSONAObjeto()">Convertir a JS</button>
     </form>
 
     <div id="resultado"></div>
-<div id="tablaysuma">
-    <table id="tabla">
-        <thead>
-            <tr>
-                <th id="th-nombre">Nombre</th>
-                <th id="th-apellidos">Apellidos</th>
-                <th id="th-edad">Edad</th>
-                <th id="th-ciudad">Ciudad</th>
-            </tr>
-        </thead>
-        <tbody id="tbody-datos">
-        </tbody>
-    </table>
-    <div id="extra">
 
+    <div id="tablaysuma">
+        <table id="tabla">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Edad</th>
+                    <th>Ciudad</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-datos"></tbody>
+        </table>
+        <div id="extra"></div>
     </div>
-    </div>
-</div>
+
     <footer>
         <p><a href="../index.html">Volver al inicio</a></p>
     </footer>
+
     <script>
+        // Variables globales
+        let jsonGuardado = "";
+        let listaEdades  = [];
+
         function comprobarCampos() {
-            if ($("#nombre").val() === "") {
-                alert("El campo nombre es obligatorio");
-                return false;
-            }
-            if ($("#apellidos").val() === "") {
-                alert("El campo apellidos es obligatorio");
-                return false;
-            }
-            if ($("#edad").val() === "") {
-                alert("El campo edad es obligatorio");
-                return false;
-            }
-            if ($("#ciudad").val() === "") {
-                alert("El campo ciudad es obligatorio");
-                return false;
-            }
+            if ($("#nombre").val()    === "") { alert("El campo nombre es obligatorio");    return false; }
+            if ($("#apellidos").val() === "") { alert("El campo apellidos es obligatorio"); return false; }
+            if ($("#edad").val()      === "") { alert("El campo edad es obligatorio");      return false; }
+            if ($("#ciudad").val()    === "") { alert("El campo ciudad es obligatorio");    return false; }
             return true;
-    }
-        function serializar(obj) {
-            return JSON.stringify(obj);
         }
-        //Stringify convierte un objeto JS a JSON, es decir, serializa el objeto
 
-        function deserializar(objJson) {
-            return JSON.parse(objJson);
-        }
-        //parse convierte un JSON a un objeto JS, es decir, deserializa el JSON
+        function serializar(obj)       { return JSON.stringify(obj); }
+        function deserializar(jsonStr) { return JSON.parse(jsonStr); }
 
-        // Recibe un objeto, lo serializa y lo muestra por consola
         function enviar(obj) {
-            console.log("Serializado: " + obj.nombre);
+            console.log("Serializado:", obj.nombre);
             return serializar(obj);
         }
-        
-        //Recibe un JSON, lo deserializa y lo muestra por consola
-        function recibir(json_serializado) {
-            console.log("Deserializado: " + json_serializado);
-            return deserializar(json_serializado);
+        function recibir(jsonStr) {
+            console.log("Deserializado:", jsonStr);
+            return deserializar(jsonStr);
         }
 
-        // Recoge los datos del formulario y convierte a JSON usando enviar()
+        // Boton 1: recoge formulario y guarda JSON en variable global
         function convertirObjetoAJSON() {
             if (!comprobarCampos()) return;
-            const objeto = [{
-                nombre: $("#nombre").val(),
+            const objeto = {
+                nombre:    $("#nombre").val(),
                 apellidos: $("#apellidos").val(),
-                edad: parseInt($("#edad").val()),
-                ciudad: $("#ciudad").val()
-            }];
-            const json = enviar(objeto);
-            $("#resultado").text(json); //Le devuelve el resultado de serializar
+                edad:      parseInt($("#edad").val(), 10),
+                ciudad:    $("#ciudad").val()
+            };
+            jsonGuardado = enviar(objeto);
+            $("#resultado").text(jsonGuardado);
         }
 
-        // Deserializa el JSON del resultado usando recibir() y lo mete en la tabla
+        // Boton 2: deserializa desde la variable global (NUNCA del DOM)
         function convertirJSONAObjeto() {
-            const json = $("#resultado").text();
-            const objeto_recuperado = recibir(json);
+            if (jsonGuardado === "") {
+                alert("Primero convierte a JSON");
+                return;
+            }
+            const obj = recibir(jsonGuardado);
+            jsonGuardado = "";
             $("#resultado").text(
-                `Nombre: ${objeto_recuperado.nombre}, Apellidos: ${objeto_recuperado.apellidos}, Edad: ${objeto_recuperado.edad}, Ciudad: ${objeto_recuperado.ciudad}`
+                "Nombre: " + obj.nombre + ", Apellidos: " + obj.apellidos +
+                ", Edad: " + obj.edad + ", Ciudad: " + obj.ciudad
             );
-            aniadirTabla(objeto_recuperado);
+            aniadirTabla(obj);
         }
 
-        //Función para generar una fila de la tabla a partir del objeto recuperado
-        function generaTr(objeto_recuperado) {
+        function generaTr(obj) {
             return "<tr>" +
-                `<td>${objeto_recuperado.nombre}</td>` +
-                `<td>${objeto_recuperado.apellidos}</td>` +
-                `<td>${objeto_recuperado.edad}</td>` +
-                `<td>${objeto_recuperado.ciudad}</td>` +
+                "<td>" + obj.nombre    + "</td>" +
+                "<td>" + obj.apellidos + "</td>" +
+                "<td>" + obj.edad      + "</td>" +
+                "<td>" + obj.ciudad    + "</td>" +
                 "</tr>";
         }
-        //Muestra en un elemento adicional (p, div, span, …) o en consola (console.log) la suma de edades, media, máximo y mínimo.
+
+        function aniadirTabla(obj) {
+            $("#tbody-datos").append(generaTr(obj));
+            listaEdades.push(obj.edad);
+            calcularEstadisticas();
+        }
+
         function calcularEstadisticas() {
-            const edades = [];
-            $("#tbody-datos tr").each(function() {
-                const edad = parseInt($(this).find("td:nth-child(3)").text(), 10);
-                edades.push(edad);
-            });
-
-            let suma = 0;
-            edades.forEach(function(edad) {
-                suma += edad;
-            });
-
-            const media = edades.length ? suma / edades.length : 0;
-            const maximo =  Math.max(...edades);
-            const minimo = Math.min(...edades) ;
-
+            if (listaEdades.length === 0) {
+                $("#extra").html("Sin datos");
+                return;
+            }
+            const suma   = listaEdades.reduce(function(acc, e) { return acc + e; }, 0);
+            const media  = suma / listaEdades.length;
+            const maximo = Math.max.apply(null, listaEdades);
+            const minimo = Math.min.apply(null, listaEdades);
             $("#extra").html(
-                `Suma = ${suma} <br> Media = ${media.toFixed(2)} <br> Máximo = ${maximo} <br> Mínimo = ${minimo}`
+                "Suma = "    + suma             + "<br>" +
+                "Media = "   + media.toFixed(2) + "<br>" +
+                "Maximo = "  + maximo           + "<br>" +
+                "Minimo = "  + minimo
             );
         }
-
-        // jQuery para insertar la fila en tbody
-        function aniadirTabla(objeto) {
-           $("#tbody-datos").append(generaTr(objeto));
-            calcularEstadisticas(objeto);
-        }
-        
     </script>
 
     <style>
-        h1 {
-    text-align: center;
-        }
+        h1 { text-align: center; }
         body {
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             background-color: rgb(173, 159, 173);
         }
-
         form {
             display: flex;
-            justify-content: center;
-            align-items: center;
             flex-direction: column;
+            align-items: center;
             background-color: rgb(88, 71, 104);
-            margin-left: 20%;
-            margin-right: 20%;
+            margin: 0 20%;
             border-radius: 20px;
             padding: 10px;
         }
         #resultado {
             display: flex;
-            justify-content: center;              
-            margin-top: 20px;
-            background-color: rgb(199, 186, 211);
+            justify-content: center;
+            margin: 20px 15% 0;
             padding: 10px;
+            background-color: rgb(199, 186, 211);
             border: 3px solid rgb(88, 71, 104);
             border-radius: 20px;
-            margin-left: 15%;
-            margin-right: 15%;
         }
         input {
             border-radius: 30px;
@@ -189,6 +162,7 @@
             margin: 3px;
             background-color: rgb(199, 186, 211);
             border: 3px solid rgb(63, 51, 75);
+            cursor: pointer;
         }
         button:hover {
             background-color: rgb(63, 51, 75);
@@ -196,41 +170,30 @@
         }
         #tablaysuma {
             display: flex;
-            justify-content: center;             
-            align-items: center;                
             flex-direction: row;
-            gap: 20px;                          
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
             background-color: rgb(88, 71, 104);
-            margin-left: 10%;
-            margin-right: 10%;
-            margin-top: 20px;
+            margin: 20px 10% 0;
             border-radius: 20px;
             padding: 20px;
         }
-        table {
-            border-collapse: collapse;
-            width: auto;                        
-            margin: 0;                          
-        }
+        table { border-collapse: collapse; width: auto; }
         th, td {
             border: 1px solid rgb(63, 51, 75);
             padding: 8px;
             text-align: left;
         }
-        thead {
-            background-color: rgb(88, 71, 104);
-            color: white;
-        }
+        thead { background-color: rgb(88, 71, 104); color: white; }
         #extra {
             background-color: rgb(199, 186, 211);
             padding: 10px;
             border: 3px solid rgb(88, 71, 104);
             border-radius: 10px;
-            margin: 0;                           
             min-width: 150px;
-            text-align: center;                 
+            text-align: center;
         }
-
     </style>
 </body>
 </html>
