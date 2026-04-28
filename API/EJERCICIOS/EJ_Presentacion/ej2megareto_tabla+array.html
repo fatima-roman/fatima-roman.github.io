@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 2 reto</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="..\CSS\footer_volver.css">
+</head>
+<body>
+    <h1>Ejercicio 2 reto</h1>
+    <form id="input">
+        <input type="text" id="nombre" placeholder="Nombre">
+        <input type="text" id="apellidos" placeholder="Apellidos">
+        <input type="number" id="edad" placeholder="Edad">
+        <input type="text" id="ciudad" placeholder="Ciudad">
+        <button type="button" onclick="recogerDatos()">Enviar</button> 
+    </form>
+
+    <div id="resultado"></div>
+<div id="tablaysuma">
+    <table id="tabla">
+        <thead>
+            <tr>
+                <th id="th-nombre">Nombre</th>
+                <th id="th-apellidos">Apellidos</th>
+                <th id="th-edad">Edad</th>
+                <th id="th-ciudad">Ciudad</th>
+            </tr>
+        </thead>
+        <tbody id="tbody-datos">
+        </tbody>
+    </table>
+    <div id="extra">
+
+    </div>
+    </div>
+</div>
+    <footer>
+        <p><a href="../index.html">Volver al inicio</a></p>
+    </footer>
+    <script>
+        let datos = []; 
+
+        function comprobarCampos() {
+            if ($("#nombre").val() === "") {
+                alert("El campo nombre es obligatorio");
+                return false;
+            }
+            if ($("#apellidos").val() === "") {
+                alert("El campo apellidos es obligatorio");
+                return false;
+            }
+            if ($("#edad").val() === "") {
+                alert("El campo edad es obligatorio");
+                return false;
+            }
+            if ($("#ciudad").val() === "") {
+                alert("El campo ciudad es obligatorio");
+                return false;
+            }
+            return true;
+    }
+        
+    function recogerDatos(){        
+        if (!comprobarCampos()) return;
+        let nuevoUsuario = {
+            nombre: $("#nombre").val().trim(),
+            apellidos: $("#apellidos").val().trim(),
+            edad: parseInt($("#edad").val()),
+            ciudad: $("#ciudad").val().trim()
+        }
+        datos.push(nuevoUsuario);
+
+        //a es let => valor a buscar en a === comparado con el valor que queremos buscar tmb podria ser 'Ana'
+        //let posicion = datos.findIndex(a => a.nombre === nuevoUsuario.nombre && a.apellidos === nuevoUsuario.apellidos)
+        let posicion = datos.length - 1;
+        generarTabla(nuevoUsuario, posicion);
+
+        calcularEst();
+    }
+
+    function generarTabla(nuevoUsuario, posicion) {
+        let tbody = $("#tbody-datos");
+        let fila = $(`
+            <tr id="fila_${posicion}">
+                <td>${nuevoUsuario.nombre}</td>
+                <td>${nuevoUsuario.apellidos}</td>
+                <td>${nuevoUsuario.edad}</td>
+                <td>${nuevoUsuario.ciudad}</td>
+            </tr>
+        `);
+        tbody.append(fila);
+        fila.on("click", function () {
+            eliminarFila(posicion);
+        });
+        console.log(fila);
+    }
+
+    function calcularEst(){
+                let suma = 0; 
+        let edades = [];
+        datos.forEach((usuario) => {
+        suma += usuario.edad;
+        edades.push(usuario.edad);
+    });
+        const media = edades.length ? suma / edades.length : 0;
+        //const maximo =  Math.max(...edades);
+        const maximo =  edades.length ? Math.max(...edades) : 0;
+        //const minimo = Math.min(...edades) ;
+        const minimo = edades.length ? Math.min(...edades) : 0 ;
+
+        $("#extra").html(
+            `Suma = ${suma} <br> Media = ${media.toFixed(2)} <br> Máximo = ${maximo} <br> Mínimo = ${minimo}`
+        );
+    }
+
+    function eliminarFila(posicion) {
+    datos.splice(posicion, 1);
+
+    let tbody = $("#tbody-datos");
+    tbody.empty();
+
+    datos.forEach((usuario, index) => {
+        let fila = $(`
+            <tr id="fila_${index}">
+                <td>${usuario.nombre}</td>
+                <td>${usuario.apellidos}</td>
+                <td>${usuario.edad}</td>
+                <td>${usuario.ciudad}</td>
+            </tr>
+        `);
+
+        fila.on("click", function () {
+            eliminarFila(index);
+        });
+
+        tbody.append(fila);
+    });
+
+    calcularEst();
+}
+$(document).ready(function () {});
+
+    </script>
+
+    <style>
+        h1 {
+    text-align: center;
+        }
+        body {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            background-color: rgb(173, 159, 173);
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: rgb(88, 71, 104);
+            margin-left: 20%;
+            margin-right: 20%;
+            border-radius: 20px;
+            padding: 10px;
+        }
+        #resultado {
+            display: flex;
+            justify-content: center;              
+            margin-top: 20px;
+            background-color: rgb(199, 186, 211);
+            padding: 10px;
+            border: 3px solid rgb(88, 71, 104);
+            border-radius: 20px;
+            margin-left: 15%;
+            margin-right: 15%;
+        }
+        input {
+            border-radius: 30px;
+            padding: 10px;
+            margin: 3px;
+            background-color: rgb(199, 186, 211);
+        }
+        button {
+            border-radius: 30px;
+            padding: 10px;
+            margin: 3px;
+            background-color: rgb(199, 186, 211);
+            border: 3px solid rgb(63, 51, 75);
+        }
+        button:hover {
+            background-color: rgb(63, 51, 75);
+            color: white;
+        }
+        #tablaysuma {
+            display: flex;
+            justify-content: center;             
+            align-items: center;                
+            flex-direction: row;
+            gap: 20px;                          
+            background-color: rgb(88, 71, 104);
+            margin-left: 10%;
+            margin-right: 10%;
+            margin-top: 20px;
+            border-radius: 20px;
+            padding: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: auto;                        
+            margin: 0;                          
+        }
+        th, td {
+            border: 1px solid rgb(63, 51, 75);
+            padding: 8px;
+            text-align: left;
+        }
+        thead {
+            background-color: rgb(88, 71, 104);
+            color: white;
+        }
+        #extra {
+            background-color: rgb(199, 186, 211);
+            padding: 10px;
+            border: 3px solid rgb(88, 71, 104);
+            border-radius: 10px;
+            margin: 0;                           
+            min-width: 150px;
+            text-align: center;                 
+        }
+
+    </style>
+</body>
+</html>
