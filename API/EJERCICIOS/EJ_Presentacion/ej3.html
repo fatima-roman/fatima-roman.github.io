@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 2 reto</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="..\CSS\footer_volver.css">
+</head>
+<body>
+    <h1>Ejercicio 2 reto</h1>
+    <form id="input">
+        <input type="text" id="nombre" placeholder="Nombre">
+        <input type="text" id="apellidos" placeholder="Apellidos">
+        <input type="number" id="edad" placeholder="Edad">
+        <input type="text" id="ciudad" placeholder="Ciudad">
+        <div id="grupo-hobbies">
+            <label><input type="checkbox" class="hobbie" value="Deporte"> Deporte</label>
+            <label><input type="checkbox" class="hobbie" value="Lectura"> Lectura</label>
+            <label><input type="checkbox" class="hobbie" value="Música"> Música</label>
+            <label><input type="checkbox" class="hobbie" value="Juegos"> Juegos</label>
+            <label><input type="checkbox" class="hobbie" value="Cine"> Cine</label>
+            <label><input type="checkbox" class="hobbie" value="Teatro"> Teatro</label>
+            <label><input type="checkbox" class="hobbie" value="Coleccionismo"> Coleccionismo</label>
+            <label><input type="checkbox" class="hobbie" value="Bricolaje"> Bricolaje</label>
+            <label><input type="checkbox" class="hobbie" value="Cosplay"> Cosplay</label>
+        </div>
+        <button type="button" onclick="recogerDatos()">Enviar</button> 
+    </form>
+
+    <div id="resultado"></div>
+<div id="tablaysuma">
+    <table id="tabla">
+        <thead>
+            <tr>
+                <th id="th-nombre">Nombre</th>
+                <th id="th-apellidos">Apellidos</th>
+                <th id="th-edad">Edad</th>
+                <th id="th-ciudad">Ciudad</th>
+                <th id="th-hobbies">Hobbies</th>
+            </tr>
+        </thead>
+        <tbody id="tbody-datos">
+        </tbody>
+    </table>
+    <div id="extra">
+
+    </div>
+    </div>
+</div>
+    <footer>
+        <p><a href="../index.html">Volver al inicio</a></p>
+    </footer>
+    <script>
+    let datos = [];
+
+    function comprobarCampos() {
+        if ($("#nombre").val() === "") {
+            alert("El campo nombre es obligatorio");
+            return false;
+        }
+        if ($("#apellidos").val() === "") {
+            alert("El campo apellidos es obligatorio");
+            return false;
+        }
+        if ($("#edad").val() === "") {
+            alert("El campo edad es obligatorio");
+            return false;
+        }
+        if ($("#ciudad").val() === "") {
+            alert("El campo ciudad es obligatorio");
+            return false;
+        }
+        return true;
+    }
+
+    function recogerDatos(){        
+        if (!comprobarCampos()) return;
+
+        // recoger hobbies marcados
+        let hobbiesSeleccionados = [];
+        $(".hobbie:checked").each(function () {
+            hobbiesSeleccionados.push($(this).val());
+        });
+
+        let nuevoUsuario = {
+            nombre: $("#nombre").val().trim(),
+            apellidos: $("#apellidos").val().trim(),
+            edad: parseInt($("#edad").val()),
+            ciudad: $("#ciudad").val().trim(),
+            hobbies: hobbiesSeleccionados.join(", ")
+        };
+
+        datos.push(nuevoUsuario);
+
+        let posicion = datos.length - 1;
+        generarFila(nuevoUsuario, posicion);
+
+        calcularEst();
+    }
+
+    function generarFila(usuario, posicion) {
+        let tbody = $("#tbody-datos");
+        let fila = $(`
+            <tr id="fila_${posicion}">
+                <td>${usuario.nombre}</td>
+                <td>${usuario.apellidos}</td>
+                <td>${usuario.edad}</td>
+                <td>${usuario.ciudad}</td>
+                <td>${usuario.hobbies}</td>
+            </tr>
+        `);
+
+        fila.on("click", function () {
+            eliminarFila(posicion);
+        });
+
+        tbody.append(fila);
+    }
+
+    function calcularEst(){
+        let suma = 0; 
+        let edades = [];
+
+        datos.forEach((usuario) => {
+            suma += usuario.edad;
+            edades.push(usuario.edad);
+        });
+
+        const media  = edades.length ? suma / edades.length : 0;
+        const maximo = edades.length ? Math.max(...edades) : 0;
+        const minimo = edades.length ? Math.min(...edades) : 0;
+
+        $("#extra").html(
+            `Suma = ${suma} <br> Media = ${media.toFixed(2)} <br> Máximo = ${maximo} <br> Mínimo = ${minimo}`
+        );
+    }
+
+    function eliminarFila(posicion) {
+        datos.splice(posicion, 1);
+
+        let tbody = $("#tbody-datos");
+        tbody.empty();
+
+        datos.forEach((usuario, index) => {
+            let fila = $(`
+                <tr id="fila_${index}">
+                    <td>${usuario.nombre}</td>
+                    <td>${usuario.apellidos}</td>
+                    <td>${usuario.edad}</td>
+                    <td>${usuario.ciudad}</td>
+                    <td>${usuario.hobbies}</td>
+                </tr>
+            `);
+
+            fila.on("click", function () {
+                eliminarFila(index);
+            });
+
+            tbody.append(fila);
+        });
+
+        calcularEst();
+    }
+
+    // Límite de 3 hobbies marcados
+    $(document).ready(function () {
+        $(".hobbie").on("change", function () {
+            let marcados = $(".hobbie:checked").length;
+
+            if (marcados >= 3) {
+                // bloquear los no marcados
+                $(".hobbie:not(:checked)").prop("disabled", true);
+            } else {
+                // volver a habilitar todos
+                $(".hobbie").prop("disabled", false);
+            }
+        });
+    });
+</script>
+
+    <style>
+        h1 {
+    text-align: center;
+        }
+        body {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            background-color: rgb(173, 159, 173);
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: rgb(88, 71, 104);
+            margin-left: 20%;
+            margin-right: 20%;
+            border-radius: 20px;
+            padding: 10px;
+        }
+        #resultado {
+            display: flex;
+            justify-content: center;              
+            margin-top: 20px;
+            background-color: rgb(199, 186, 211);
+            padding: 10px;
+            border: 3px solid rgb(88, 71, 104);
+            border-radius: 20px;
+            margin-left: 15%;
+            margin-right: 15%;
+        }
+        input {
+            border-radius: 30px;
+            padding: 10px;
+            margin: 3px;
+            background-color: rgb(199, 186, 211);
+        }
+        button {
+            border-radius: 30px;
+            padding: 10px;
+            margin: 3px;
+            background-color: rgb(199, 186, 211);
+            border: 3px solid rgb(63, 51, 75);
+        }
+        button:hover {
+            background-color: rgb(63, 51, 75);
+            color: white;
+        }
+        #tablaysuma {
+            display: flex;
+            justify-content: center;             
+            align-items: center;                
+            flex-direction: row;
+            gap: 20px;                          
+            background-color: rgb(88, 71, 104);
+            margin-left: 10%;
+            margin-right: 10%;
+            margin-top: 20px;
+            border-radius: 20px;
+            padding: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: auto;                        
+            margin: 0;                          
+        }
+        th, td {
+            border: 1px solid rgb(63, 51, 75);
+            padding: 8px;
+            text-align: left;
+        }
+        thead {
+            background-color: rgb(88, 71, 104);
+            color: white;
+        }
+        #extra {
+            background-color: rgb(199, 186, 211);
+            padding: 10px;
+            border: 3px solid rgb(88, 71, 104);
+            border-radius: 10px;
+            margin: 0;                           
+            min-width: 150px;
+            text-align: center;                 
+        }
+        /* Contenedor de hobbies dentro del form */
+#grupo-hobbies {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 15%;
+    margin-right: 15%;
+   background-color: rgb(199, 186, 211);
+    border-radius: 15px;
+    padding: 8px 12px;
+    border: 2px solid rgb(88, 71, 104);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    border-color: rgb(43, 34, 51);
+    border-width: 2px;
+}
+
+/* Cada label de hobby en línea, coherente con el resto del form */
+#grupo-hobbies label {
+    color: rgb(255, 255, 255);
+    font-size: 0.9rem;
+    background-color: rgb(88, 71, 104);
+    border-radius: 20px;
+    padding: 4px 10px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Checkbox pequeño, sin romper el estilo de los inputs */
+#grupo-hobbies input[type="checkbox"] {
+    width: auto;
+    height: auto;
+    margin: 0;
+    accent-color: rgb(63, 51, 75); /* color del check */
+    border-radius: 4px;
+}
+
+    </style>
+</body>
+</html>
