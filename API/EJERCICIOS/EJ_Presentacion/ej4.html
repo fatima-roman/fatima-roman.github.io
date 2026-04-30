@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio 3</title>
+    <title>Ejercicio 4</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="..\CSS\footer_volver.css">
 </head>
 <body>
-    <h1>Ejercicio 3</h1>
+    <h1>Ejercicio 4</h1>
     <form id="input">
         <input type="text" id="nombre" placeholder="Nombre">
         <input type="text" id="apellidos" placeholder="Apellidos">
@@ -30,28 +30,26 @@
     </form>
 
     <div id="resultado"></div>
-<div id="tablaysuma">
-    <table id="tabla">
-        <thead>
-            <tr>
-                <th id="th-nombre">Nombre</th>
-                <th id="th-apellidos">Apellidos</th>
-                <th id="th-edad">Edad</th>
-                <th id="th-ciudad">Ciudad</th>
-                <th id="th-hobbies">Hobbies</th>
-            </tr>
-        </thead>
-        <tbody id="tbody-datos">
-        </tbody>
-    </table>
-    <div id="extra">
-
+    <div id="tablaysuma">
+        <table id="tabla">
+            <thead>
+                <tr>
+                    <th id="th-nombre">Nombre</th>
+                    <th id="th-apellidos">Apellidos</th>
+                    <th id="th-edad">Edad</th>
+                    <th id="th-ciudad">Ciudad</th>
+                    <th id="th-hobbies">Hobbies</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-datos">
+            </tbody>
+        </table>
+        <div id="extra"></div>
     </div>
-    </div>
-</div>
     <footer>
         <p><a href="../index.html">Volver al inicio</a></p>
     </footer>
+
     <script>
     let datos = [];
 
@@ -75,15 +73,8 @@
         return true;
     }
 
-    function recogerDatos(){        
+    function recogerDatos() {        
         if (!comprobarCampos()) return;
-
-        /*
-        // recoger hobbies marcados. .hobbie nos recoge el elemento con ese id que se encuentre en estado :checked 
-        let hobbiesSeleccionados = [];
-        $(".hobbie:checked").each(function () {
-            hobbiesSeleccionados.push($(this).val());
-        });*/
 
         let nuevoUsuario = {
             nombre: $("#nombre").val().trim(),
@@ -91,18 +82,19 @@
             edad: parseInt($("#edad").val()),
             ciudad: $("#ciudad").val().trim(),
             hobbies: $('.hobbie:checked')
-            .map(function () {
+                .map(function () {
                     return $(this).val();
-                }
-            ).get()  // → convierte el objeto jQuery en un array de JS estándar
+                }).get()
         };
 
         datos.push(nuevoUsuario);
+        envio();
 
-        let posicion = datos.length - 1;
-        generarFila(nuevoUsuario, posicion);
-
-        calcularEst();
+        // ✅ CAMBIO 1: Limpiar el formulario tras enviar.
+        // Antes los campos quedaban con los valores escritos, lo que
+        // obligaba al usuario a borrarlos manualmente antes del siguiente envío.
+        $("#nombre, #apellidos, #edad, #ciudad").val("");
+        $(".hobbie").prop("checked", false).prop("disabled", false);
     }
 
     function generarFila(usuario, posicion) {
@@ -123,46 +115,74 @@
 
         tbody.append(fila);
     }
-    function calcularEst(){
-        let suma = 0; 
-        datos.forEach((usuario) => {
-        suma += usuario.edad;
-    });
 
-        const media = datos.length ? suma / datos.length : 0;
-        const maximo =  datos.length ? Math.max(...datos.map(u => u.edad)) : 0;
-        const minimo = datos.length ? Math.min(...datos.map(u => u.edad)) : 0 ; // = Math.min(...edades)
-
+    function pintarEstadisticas(calculo) {
         $("#extra").html(
-            `Suma = ${suma} <br> Media = ${media.toFixed(2)} <br> Máximo = ${maximo} <br> Mínimo = ${minimo}`
+            `Suma = ${calculo.suma} <br> Media = ${calculo.media.toFixed(2)} <br> Máximo = ${calculo.max} <br> Mínimo = ${calculo.min}`
         );
     }
 
+    // ✅ CAMBIO 2: Simplificar eliminarFila, eliminando la reconstrucción manual de la tabla.
+    // Antes, esta función reconstruía toda la tabla con datos.forEach() Y luego llamaba
+    // a envio(), cuyo .done() ejecutaba generarFila() una vez más, duplicando la última fila.
+    // Ahora la función solo actualiza el array y delega el repintado completamente a envio().
     function eliminarFila(posicion) {
         datos.splice(posicion, 1);
 
-        let tbody = $("#tbody-datos");
-        tbody.empty();
+        if (datos.length > 0) {
+            envio();
+        } else {
+            // Si no quedan datos, limpiar tabla y estadísticas manualmente
+            // porque no hay nada que enviar al servidor
+            $("#tbody-datos").empty();
+            $("#extra").html("Sin datos");
+        }
+    }
 
-        datos.forEach((usuario, index) => {
-            let fila = $(`
-                <tr id="fila_${index}">
-                    <td>${usuario.nombre}</td>
-                    <td>${usuario.apellidos}</td>
-                    <td>${usuario.edad}</td>
-                    <td>${usuario.ciudad}</td>
-                    <td>${usuario.hobbies}</td>
-                </tr>
-            `);
-
-            fila.on("click", function () {
-                eliminarFila(index);
+    // ✅ CAMBIO 3: envio() es ahora el único responsable de repintar la tabla entera.
+    // Antes solo añadía la última fila con generarFila(), lo que causaba duplicados
+    // al llamarse desde eliminarFila() (que ya había reconstruido la tabla antes).
+    // Ahora vacía el tbody y recorre response.lista completa para repintarlo desde cero,
+    // garantizando que la tabla siempre refleja exactamente lo que devuelve el servidor.
+    // ✅ CAMBIO 4: Eliminada la llamada a solicitud() dentro de .done().
+    // El POST ya devuelve response.calculos con las estadísticas actualizadas,
+    // por lo que hacer un GET adicional era redundante y pintaba los datos dos veces.
+    function envio() {
+        $.ajax({
+            url: "https://lm.iesnervion.es/eco.php",
+            method: "POST",
+            data: JSON.stringify(datos),
+            dataType: "json"
+        })
+        .done(function(response) {
+            let tbody = $("#tbody-datos");
+            tbody.empty(); // Limpiar antes de repintar
+            response.lista.forEach((usuario, index) => {
+                generarFila(usuario, index);
             });
-
-            tbody.append(fila);
+            pintarEstadisticas(response.calculos);
+            console.log(response);
+        })
+        .fail(function(error) {
+            console.log(error);
         });
+    }
 
-        calcularEst();
+    // solicitud() queda disponible por si se necesita en el futuro,
+    // pero ya no se llama automáticamente desde envio()
+    function solicitud() { 
+        $.ajax({ 
+            url: "https://lm.iesnervion.es/eco.php", 
+            method: "GET", 
+            dataType: "json"
+        })
+        .done(function(response) {
+            console.log(response);
+            pintarEstadisticas(response.calculos);
+        })
+        .fail(function(error) {
+            console.log(error);
+        });
     }
 
     // Límite de 3 hobbies marcados
@@ -171,25 +191,22 @@
             let marcados = $(".hobbie:checked").length;
 
             if (marcados >= 3) {
-                // bloquear los no marcados, .prop == propiedad 
                 $(".hobbie:not(:checked)").prop("disabled", true);
             } else {
-                // volver a habilitar todos
                 $(".hobbie").prop("disabled", false);
             }
         });
     });
-</script>
+    </script>
 
     <style>
         h1 {
-    text-align: center;
+            text-align: center;
         }
         body {
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             background-color: rgb(173, 159, 173);
         }
-
         form {
             display: flex;
             justify-content: center;
@@ -256,17 +273,14 @@
             background-color: rgb(88, 71, 104);
             color: white;
         }
-
-        tbody{
+        tbody {
             color: rgb(233, 226, 226);
         }
-
-                tbody tr:hover {
+        tbody tr:hover {
             background-color: rgb(199, 186, 211);
             color: black;
             cursor: pointer;
         }
-
         #extra {
             background-color: rgb(199, 186, 211);
             padding: 10px;
@@ -276,45 +290,37 @@
             min-width: 150px;
             text-align: center;                 
         }
-        /* Contenedor de hobbies dentro del form */
-#grupo-hobbies {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 15%;
-    margin-right: 15%;
-   background-color: rgb(199, 186, 211);
-    border-radius: 15px;
-    padding: 8px 12px;
-    border: 2px solid rgb(88, 71, 104);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    border-color: rgb(43, 34, 51);
-    border-width: 2px;
-}
-
-/* Cada label de hobby en línea, coherente con el resto del form */
-#grupo-hobbies label {
-    color: rgb(255, 255, 255);
-    font-size: 0.9rem;
-    background-color: rgb(88, 71, 104);
-    border-radius: 20px;
-    padding: 4px 10px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-/* Checkbox pequeño, sin romper el estilo de los inputs */
-#grupo-hobbies input[type="checkbox"] {
-    width: auto;
-    height: auto;
-    margin: 0;
-    accent-color: rgb(63, 51, 75); /* color del check */
-    border-radius: 4px;
-}
-
+        #grupo-hobbies {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-left: 15%;
+            margin-right: 15%;
+            background-color: rgb(199, 186, 211);
+            border-radius: 15px;
+            padding: 8px 12px;
+            border: 2px solid rgb(43, 34, 51);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+        #grupo-hobbies label {
+            color: rgb(255, 255, 255);
+            font-size: 0.9rem;
+            background-color: rgb(88, 71, 104);
+            border-radius: 20px;
+            padding: 4px 10px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        #grupo-hobbies input[type="checkbox"] {
+            width: auto;
+            height: auto;
+            margin: 0;
+            accent-color: rgb(63, 51, 75);
+            border-radius: 4px;
+        }
     </style>
 </body>
 </html>
