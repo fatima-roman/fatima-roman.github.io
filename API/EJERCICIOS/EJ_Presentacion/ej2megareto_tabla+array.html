@@ -98,17 +98,24 @@
     }
 
     function calcularEst(){
-                let suma = 0; 
-        let edades = [];
+        let suma = 0; 
         datos.forEach((usuario) => {
         suma += usuario.edad;
-        edades.push(usuario.edad);
     });
-        const media = edades.length ? suma / edades.length : 0;
-        //const maximo =  Math.max(...edades);
-        const maximo =  edades.length ? Math.max(...edades) : 0;
-        //const minimo = Math.min(...edades) ;
-        const minimo = edades.length ? Math.min(...edades) : 0 ;
+
+    /*
+    .map => crea un nuevo array aplicando una función callback a cada elemento del array original
+    1. elemento — el elemento actual que se está procesando
+    2. indice (opcional) — la posición del elemento en el array
+    3. array (opcional) — el array original completo
+    u = usuario actual
+    u.edad = edad del usuario actual
+    u toma valor de usuario tomando edad 
+    Recorre igual que crear array edades pero sin crear array innecesario 
+    */
+        const media = datos.length ? suma / datos.length : 0;
+        const maximo =  datos.length ? Math.max(...datos.map(u => u.edad)) : 0;
+        const minimo = datos.length ? Math.min(...datos.map(u => u.edad)) : 0 ; // = Math.min(...edades)
 
         $("#extra").html(
             `Suma = ${suma} <br> Media = ${media.toFixed(2)} <br> Máximo = ${maximo} <br> Mínimo = ${minimo}`
@@ -219,6 +226,13 @@ $(document).ready(function () {});
             background-color: rgb(88, 71, 104);
             color: white;
         }
+
+        tbody tr:hover {
+            background-color: rgb(199, 186, 211);
+            color: black;
+            cursor: pointer;
+        }
+
         #extra {
             background-color: rgb(199, 186, 211);
             padding: 10px;
