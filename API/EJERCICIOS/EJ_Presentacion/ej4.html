@@ -125,8 +125,6 @@
         if (datos.length > 0) {
             envio();
         } else {
-            // Si no quedan datos, limpiar tabla y estadísticas manualmente
-            // porque no hay nada que enviar al servidor
             $("#tbody-datos").empty();
             $("#extra").html("Sin datos");
         }
@@ -155,6 +153,7 @@
 
     // solicitud() queda disponible por si se necesita en el futuro,
     // pero ya no se llama automáticamente desde envio()
+    // GET SOLO SIRVE PARA OBTENER DATOS, NO PARA ENVIARLOS, POR ESO SE USA POST EN envio()
     function solicitud() { 
         $.ajax({ 
             url: "https://lm.iesnervion.es/eco.php", 
