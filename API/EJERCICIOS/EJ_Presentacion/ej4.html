@@ -90,8 +90,6 @@
         datos.push(nuevoUsuario);
         envio();
 
-        $("#nombre, #apellidos, #edad, #ciudad").val("");
-        $(".hobbie").prop("checked", false).prop("disabled", false);
     }
 
     function generarFila(usuario, posicion) {
@@ -119,6 +117,14 @@
         );
     }
 
+    function pasarUsuario(lista) {
+        let tbody = $("#tbody-datos");
+        tbody.empty();
+        lista.forEach((usuario, index) => {
+            generarFila(usuario, index);
+        });
+    }
+
     function eliminarFila(posicion) {
         datos.splice(posicion, 1);
 
@@ -139,10 +145,8 @@
         })
         .done(function(response) {
             let tbody = $("#tbody-datos");
-            tbody.empty(); // Limpiar antes de repintar
-            response.lista.forEach((usuario, index) => {
-                generarFila(usuario, index);
-            });
+            tbody.empty(); 
+            pasarUsuario(response.lista);
             pintarEstadisticas(response.calculos);
             console.log(response);
         })
