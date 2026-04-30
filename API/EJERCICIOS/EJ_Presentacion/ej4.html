@@ -90,9 +90,6 @@
         datos.push(nuevoUsuario);
         envio();
 
-        // ✅ CAMBIO 1: Limpiar el formulario tras enviar.
-        // Antes los campos quedaban con los valores escritos, lo que
-        // obligaba al usuario a borrarlos manualmente antes del siguiente envío.
         $("#nombre, #apellidos, #edad, #ciudad").val("");
         $(".hobbie").prop("checked", false).prop("disabled", false);
     }
@@ -122,10 +119,6 @@
         );
     }
 
-    // ✅ CAMBIO 2: Simplificar eliminarFila, eliminando la reconstrucción manual de la tabla.
-    // Antes, esta función reconstruía toda la tabla con datos.forEach() Y luego llamaba
-    // a envio(), cuyo .done() ejecutaba generarFila() una vez más, duplicando la última fila.
-    // Ahora la función solo actualiza el array y delega el repintado completamente a envio().
     function eliminarFila(posicion) {
         datos.splice(posicion, 1);
 
@@ -139,14 +132,6 @@
         }
     }
 
-    // ✅ CAMBIO 3: envio() es ahora el único responsable de repintar la tabla entera.
-    // Antes solo añadía la última fila con generarFila(), lo que causaba duplicados
-    // al llamarse desde eliminarFila() (que ya había reconstruido la tabla antes).
-    // Ahora vacía el tbody y recorre response.lista completa para repintarlo desde cero,
-    // garantizando que la tabla siempre refleja exactamente lo que devuelve el servidor.
-    // ✅ CAMBIO 4: Eliminada la llamada a solicitud() dentro de .done().
-    // El POST ya devuelve response.calculos con las estadísticas actualizadas,
-    // por lo que hacer un GET adicional era redundante y pintaba los datos dos veces.
     function envio() {
         $.ajax({
             url: "https://lm.iesnervion.es/eco.php",
