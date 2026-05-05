@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ejercicio 4 - Reto</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="../CSS/footer_volver.css">
+  <style>
+    #error {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <form id="input">
+    <input type="text" id="descripcion" placeholder="Descripción">
+    <input type="text" id="idProveedor" placeholder="Id del proveedor">
+    <input type="number" id="precio" placeholder="Precio">
+    <button type="button" id="button">Enviar</button>
+  </form>
+
+  <table id="tabla" border="1">
+    <thead>
+      <tr>
+        <th>Descripcion</th>
+        <th>Proveedor</th>
+        <th>Precio</th>
+      </tr>
+    </thead>
+    <tbody id="tbody-datos"></tbody>
+  </table>
+
+  <h2 id="error">No hay error</h2>
+
+  <script>
+    let objetos = [];
+
+    function crearObj() {
+      let nuevoObjeto = {
+        descripcion: $("#descripcion").val().trim(),
+        idProveedor: $("#idProveedor").val().trim(),
+        precio: parseFloat($("#precio").val())
+      };
+
+      objetos.push(nuevoObjeto);
+      envio();
+    }
+
+    function pintarTabla(datos) {
+      $("#tbody-datos").append(`
+        <tr>
+          <td>${datos.descripcion}</td>
+          <td>${datos.idProveedor}</td>
+          <td>${datos.precio}</td>
+        </tr>
+      `);
+    }
+
+    function pasarDatos(lista) {
+      let tbody = $("#tbody-datos");
+      tbody.empty();
+      lista.forEach(element => pintarTabla(element));
+    }
+
+    function pintarError(error) {
+      if (error === null || error === "null" || error === "") {
+        $("#error").text("Todo fue OK");
+      } else {
+        $("#error").text(error);
+      }
+    }
+
+    function envio() {
+      $.ajax({
+        url: "https://lm.iesnervion.es/reto4.php",
+        method: "POST",
+        data: JSON.stringify(objetos),
+        contentType: "application/json",
+        dataType: "json"
+      })
+      .done(function(response) {
+        console.log(response);
+        if (response.lista) {
+          pasarDatos(response.lista);
+        }
+        pintarError(response.error);
+      })
+      .fail(function(error) {
+        console.log(error);
+        $("#error").text("Error en la petición");
+      });
+    }
+
+    $("#button").on("click", crearObj);
+
+    $("#tbody-datos").on("click", "tr", function() {
+      $(this).remove();
+    });
+  </script>
+</body>
+<footer>
+  <p><a href="../index.html">Volver al inicio</a></p>
+</footer>
+</html>
