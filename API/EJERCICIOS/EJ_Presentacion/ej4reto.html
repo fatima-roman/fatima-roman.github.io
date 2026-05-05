@@ -7,13 +7,112 @@
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <link rel="stylesheet" href="../CSS/footer_volver.css">
   <style>
-    #error {
-      color: red;
-      font-weight: bold;
-    }
+    body {
+    font-family: Franklin Gothic Medium, Arial Narrow, Arial, sans-serif;
+    background-color: rgb(173, 159, 173);
+    margin: 0;
+    padding: 0;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgb(88, 71, 104);
+    margin: 20px;
+    border-radius: 20px;
+    padding: 15px;
+}
+
+input {
+    border-radius: 30px;
+    padding: 10px;
+    margin: 5px;
+    background-color: rgb(199, 186, 211);
+    border: 2px solid rgb(63, 51, 75);
+    width: 250px;
+    max-width: 90%;
+    box-sizing: border-box;
+}
+
+button {
+    border-radius: 30px;
+    padding: 10px 18px;
+    margin: 5px;
+    background-color: rgb(199, 186, 211);
+    border: 3px solid rgb(63, 51, 75);
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: rgb(63, 51, 75);
+    color: white;
+}
+
+table {
+    border-collapse: collapse;
+    width: auto;
+    margin: 20px auto;
+    background-color: rgb(88, 71, 104);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+th, td {
+    border: 1px solid rgb(63, 51, 75);
+    padding: 8px 12px;
+    text-align: left;
+}
+
+thead {
+    background-color: rgb(88, 71, 104);
+    color: white;
+}
+
+tbody {
+    color: rgb(233, 226, 226);
+}
+
+tbody tr:hover {
+    background-color: rgb(199, 186, 211);
+    color: black;
+    cursor: pointer;
+}
+
+#error {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    margin: 15px;
+}
+
+h2 {
+    text-align: center;
+    color: rgb(63, 51, 75);
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+footer a {
+    color: rgb(63, 51, 75);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+        h1 {
+            text-align: center;
+        }
   </style>
 </head>
 <body>
+    <h1>Ejercicio 4 - Reto </h1>
   <form id="input">
     <input type="text" id="descripcion" placeholder="Descripción">
     <input type="text" id="idProveedor" placeholder="Id del proveedor">
@@ -21,6 +120,7 @@
     <button type="button" id="button">Enviar</button>
   </form>
 
+  <h2 id="error">No hay error</h2>
   <table id="tabla" border="1">
     <thead>
       <tr>
@@ -32,10 +132,9 @@
     <tbody id="tbody-datos"></tbody>
   </table>
 
-  <h2 id="error">No hay error</h2>
+  
 
   <script>
-    let objetos = [];
 
     function crearObj() {
       let nuevoObjeto = {
@@ -43,9 +142,7 @@
         idProveedor: $("#idProveedor").val().trim(),
         precio: parseFloat($("#precio").val())
       };
-
-      objetos.push(nuevoObjeto);
-      envio();
+      envio(nuevoObjeto);
     }
 
     function pintarTabla(datos) {
@@ -72,11 +169,11 @@
       }
     }
 
-    function envio() {
+    function envio(u) {
       $.ajax({
         url: "https://lm.iesnervion.es/reto4.php",
         method: "POST",
-        data: JSON.stringify(objetos),
+        data: JSON.stringify(u),
         contentType: "application/json",
         dataType: "json"
       })
