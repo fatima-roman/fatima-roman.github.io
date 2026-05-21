@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicio 2 reto MVC</title>
+    <link rel="stylesheet" href="../../../API/EJERCICIOS/CSS/footer_volver.css">
+</head>
+<body>
+    <h1>Ejercicio 2 reto MVC</h1>
+    <form id="form-persona">
+        <input type="text" id="nombre" name="nombre" placeholder="Nombre">
+        <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos">
+        <input type="number" id="edad" name="edad" placeholder="Edad">
+        <input type="text" id="ciudad" name="ciudad" placeholder="Ciudad">
+        <div class="buttons">
+            <button type="button" id="btn-to-json">Convertir a JSON</button>
+            <button type="button" id="btn-to-object">Convertir a JS</button>
+        </div>
+    </form>
+
+    <div id="resultado"></div>
+
+    <div id="tablaysuma">
+        <table id="tabla">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Edad</th>
+                    <th>Ciudad</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-datos"></tbody>
+        </table>
+        <div id="extra"></div>
+    </div>
+
+    <footer>
+        <p><a href="../../index.html">Volver al inicio</a></p>
+    </footer>
+
+    <script src="model.js"></script>
+    <script src="view.js"></script>
+    <script src="controller.js"></script>
+
+    <style>
+        h1 { text-align: center; }
+        body {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            background-color: rgb(173, 159, 173);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgb(88, 71, 104);
+            margin: 0 20%;
+            border-radius: 20px;
+            padding: 10px;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        #resultado {
+            display: flex;
+            justify-content: center;
+            margin: 20px 15% 0;
+            padding: 10px;
+            background-color: rgb(199, 186, 211);
+            border: 3px solid rgb(88, 71, 104);
+            border-radius: 20px;
+            min-height: 1.5em;
+        }
+        input {
+            border-radius: 30px;
+            padding: 10px;
+            margin: 3px;
+            background-color: rgb(199, 186, 211);
+            border: 1px solid rgb(63, 51, 75);
+            width: 80%;
+            max-width: 300px;
+        }
+        button {
+            border-radius: 30px;
+            padding: 10px 16px;
+            margin: 3px;
+            background-color: rgb(199, 186, 211);
+            border: 3px solid rgb(63, 51, 75);
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: rgb(63, 51, 75);
+            color: white;
+        }
+        #tablaysuma {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            background-color: rgb(88, 71, 104);
+            margin: 20px 10% 0;
+            border-radius: 20px;
+            padding: 20px;
+            flex-wrap: wrap;
+        }
+        table { border-collapse: collapse; width: auto; }
+        th, td {
+            border: 1px solid rgb(63, 51, 75);
+            padding: 8px;
+            text-align: left;
+        }
+        thead { background-color: rgb(88, 71, 104); color: white; }
+        #extra {
+            background-color: rgb(199, 186, 211);
+            padding: 10px;
+            border: 3px solid rgb(88, 71, 104);
+            border-radius: 10px;
+            min-width: 150px;
+            text-align: center;
+        }
+        footer {
+            margin-top: 20px;
+            text-align: center;
+        }
+        footer a {
+            color: rgb(63, 51, 75);
+            font-weight: bold;
+        }
+    </style>
+</body>
+</html>
